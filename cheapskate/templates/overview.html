@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+<div class="overview">
+    <label for="switch-year">Overview for year: </label>
+    <select id="switch-year" data-widget="url-selector">
+        {% for year in years %}
+            <option {% if year == dashboard.year %}selected{% endif %} value="{% url "index" %}?year={{ year }}">{{ year }}</option>
+        {% endfor %}
+    </select>
+    <select id="year-switch" data-widget="anchor-selector">
+        {% for month in dashboard.months %}
+            <option value="#{{ month.name|lower }}">{{ month.name }}</option>
+        {% endfor %}
+    </select>
+
+    <ul class="months">
+    {% for month in dashboard.months %}
+        <li id="{{ month.name|lower }}">
+            <h2>{{ month.name }}</h2>
+            <ol class="group">
+            {% for category in month.expense_categories %}
+                <li><span class="title">{{ category.title }}</span> {{ category.total|floatformat:2|intcomma }}</li>
+            {% endfor %}
+                <li class="total"><span class="title">Total</span> {{ month.totals.expenses|floatformat:2|intcomma }}</li>
+            </ol>
+            <ol class="group">
+            {% for category in month.income_categories %}
+                <li><span class="title">{{ category.title }}</span> {{ category.total|floatformat:2|intcomma }}</li>
+                <li class="total"><span class="title">Total</span> {{ month.totals.income|floatformat:2|intcomma }}</li>
+            {% endfor %}
+            </ol>
+            <ul class="group shade">
+                <li class="total"><span class="title">Net</span>{{ month.totals.net|floatformat:2|intcomma }}</b></li>
+                <li class="total"><span class="title">Percent</span> 
+                    {% with month.totals.percent as num %}
+                    <b {% if num %}
+                        class="{% if num < 0 %}danger
+                                {% elif num < 15 %}warning
+                                {% elif num > 20 %}good
+                            {% endif %}"
+                    {% endif %}>
+                    {{ month.totals.percent }}{% if num %}%{% endif %}</b>
+                {% endwith %}
+                </li>
+            </ul>
+        </li>            
+    {% endfor %}
+    </ul>
+
+    <div class="year-overview">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Year To Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Income</th>
+                    <td>{{ dashboard.ytd.income|floatformat:2|intcomma }}</td>
+                </tr>
+                <tr>
+                    <th>Expenses</th>
+                    <td>{{ dashboard.ytd.expenses|floatformat:2|intcomma }}</td>
+                </tr>
+                <tr>
+                    <th>Net</th>
+                    <td>{{ dashboard.ytd.net|floatformat:2|intcomma }}</td>
+                </tr>
+                <tr>
+                    <th>Percent</th>
+                    <td>{{ dashboard.ytd.percent }}%</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Projected</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Income</th>
+                    <td>{{ dashboard.projected.income|floatformat:2|intcomma }}</td>
+                </tr>
+                <tr>
+                    <th>Expenses</th>
+                    <td>{{ dashboard.projected.expenses|floatformat:2|intcomma }}</td>
+                </tr>
+                <tr>
+                    <th>Net</th>
+                    {% with dashboard.projected.net as num %}
+                        <td class="{% if num < 5000 %}danger
+                                    {% elif num < 10000 %}warning
+                                    {% elif num > 20000 %}good
+                                {% endif %}
+                        ">{{ num|floatformat:2|intcomma }}%</td>
+                    {% endwith %}
+                </tr>
+                <tr>
+                    <th>Percent</th>
+                    {% with dashboard.projected.percent as num %}
+                        <td class="{% if num < 5 %}danger
+                                    {% elif num < 10 %}warning
+                                    {% elif num > 15 %}good
+                                {% endif %}
+                        ">{{ num }}%</td>
+                    {% endwith %}
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+{% endblock content %}

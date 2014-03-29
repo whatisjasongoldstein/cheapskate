@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="list-view">
+    <nav>
+        <a class="button" href="{{ create_url }}">New</a>
+        <button>Filter</button>
+        <form class="inline-form" action="." method="GET">
+        <input type="text" name="search" placeholder="Search" {% if search_term %}value="{{ search_term }}"{% endif %} />
+        <button><i class="fa fa-search"></i></button>   
+        </form>
+    </nav>
+    {# <input type="file" accept="image/*"> #}
+    <table class="object-list">
+        {% for obj in object_list %}
+            {% include row_template with obj=obj %}
+        {% endfor %}
+    </table>
+
+    <div class="pagination">
+        Page {{ page.number }} of {{ page.paginator.num_pages }}
+
+        {% if previous_page_url %}
+        <a class="button" href="{{ previous_page_url }}">Previous</a>
+        {% endif %}
+
+        {% if next_page_url %}
+        <a class="button" href="{{ next_page_url }}">Next</a>
+        {% endif %}
+    </div>
+</div>
+
+<form action="." method="POST" id="listchangeform">
+    {% csrf_token %}
+</form>
+{% endblock content %}

@@ -1,0 +1,55 @@
+{% load javascript stylesheet from pipeline %}
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{% block title %}{% if title %}{{ title }} | {% endif %} Cheapskate{% endblock %}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width" user-scaleable="no">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,600' rel='stylesheet' type='text/css'>
+
+        {% stylesheet 'cheapskate:styles' %}
+    </head>
+    <body>
+        <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <header class="site-header">
+            <h1>Cheapskate</h1>
+        </header>
+        {% if title %}
+            <h2 class="page-title">{{ title }}</h2>
+        {% endif %}
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% block content %}{% endblock content %}        
+
+        <ul class="site-nav">
+            <li><a href="{% url "index" %}"><i class="fa fa-bar-chart"></i><span class="label"> Overview</span></a></li>
+            <li><a href="{% url "charge_list" %}"><i class="fa fa-credit-card"></i> <span class="label">Charges</span></a></li>
+            <li><a href="{% url "withdrawal_list" %}"><i class="fa fa-arrow-circle-o-up"></i> <span class="label">Withdrawals</span></a></li>
+            <li><a href="{% url "deposit_list" %}"><i class="fa fa-arrow-circle-o-down"></i> <span class="label">Deposits</span></a></li>
+            <li><a href="{% url "ccbill_list" %}"><i class="fa fa-envelope-o"></i> <span class="label">CC Bills</a></li>
+            <li><a href="{% url "admin:index" %}"><i class="fa fa-cog"></i> <span class="label">Django Admin</span></a></li>
+        </ul>
+
+        {% javascript 'cheapskate:scripts' %}
+
+    </body>
+</html>

@@ -1,0 +1,68 @@
+$break-stack: 600px;
+
+.list-view {
+    margin: 2rem auto;
+    width: calc(100% - 40px);
+    max-width: 900px;
+}
+
+.list-view .object-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.list-view .object-list tr {
+    line-height: 2;
+    padding: 0 0.5em;
+    box-sizing: border-box;
+    position: relative;
+    &:nth-child(even) {
+        background: #f5f5f5;
+    }
+
+    @media (max-width: $break-stack) {
+        display: block;
+        padding: 0.25rem;
+        line-height: 1.25;
+    }
+}
+
+.list-view .object-list td {
+    max-width: 10em;
+    overflow: hidden;
+    white-space: nowrap;
+    @media (max-width: $break-stack) {
+        display: block;
+        max-width: 100%;
+    }
+}
+
+.list-view .paid {
+    @media (max-width: $break-stack) {
+        position: absolute;
+        top: 1em;
+        right: 1em;
+    }
+}
+
+.list-view .amount {
+    @media (max-width: $break-stack) {
+        font-weight: 500;
+    }
+}
+
+.list-view td + td {
+    @media (max-width: $break-stack) {
+        font-size: 0.85rem;
+    }   
+}
+
+.list-view nav {
+    border-bottom: 4px solid black;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.list-view .pagination {
+    margin: 1rem 0;
+}

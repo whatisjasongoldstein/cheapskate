@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="content-main">
+<form action="{{ app_path }}" method="post" class="simple-form">{% csrf_token %}
+    {% csrf_token %}
+
+    {% spaceless %}
+    {{ form.as_p }}
+    {% endspaceless %}
+
+    <button name="signin" value="1">Sign in</button>
+
+</form>
+
+<script type="text/javascript">
+document.getElementById('id_username').focus()
+</script>
+</div>
+{% endblock %}

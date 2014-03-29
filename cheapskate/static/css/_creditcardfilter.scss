@@ -1,0 +1,88 @@
+$break-hide-categories: 670px;
+$break-stack-rows: 550px;
+
+#charge-filter {
+    display: inline-block;
+
+    tbody {
+        @media (max-width: $break-stack-rows) {
+            display: block;
+        }
+    }
+
+    tr {
+        cursor: pointer;
+        border-left: 4px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        position: relative;
+        @media (max-width: $break-stack-rows) {
+            display: block;
+        }
+    }
+
+    tr.selected {
+        border-left-color: darkgreen;
+        font-weight: 600;
+        background: rgba(0,0,0,0.10);
+    }
+
+    tr.hide {
+        display: none;
+    }
+
+    td {
+        padding: 0.5em;
+    }
+
+    & > input,
+    .items {
+        width: 100%;
+    }
+
+    .items {
+        height: 50vh;
+        max-height: 40em;
+        overflow: scroll;
+        display: block;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    a, a:visited {
+        color: black;
+    }
+
+
+    td {
+        white-space: nowrap;
+        overflow: hidden;
+        box-sizing: border-box;
+        
+        &:first-child {
+            width: 25%;
+            @media (max-width: $break-stack-rows) {
+                display: block;
+                width: 100%;
+            }
+        }
+
+        &:last-child {
+            @media (max-width: $break-stack-rows) {
+                position: absolute;
+                top: 0;
+                right: 0;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @media (max-width: $break-stack-rows) {
+            display: inline-block;
+            padding: 0 0.5rem;
+        }
+    }
+
+    td:nth-child(3n){
+        @media (max-width: $break-hide-categories) {
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,140 @@
+{% extends "admin/base_site.html" %}
+{% load humanize %}
+{% block title %}Checkbook Report | Django site admin{% endblock %}
+
+{% block content %}
+
+<style type="text/css">
+	table {width:90%;}
+	.highlight {background: #efefef;}
+	.bold {font-weight:bold;}
+	.account {float:left; height:auto; overflow:hidden; width:25%; margin: 0 1em 1em 0;}
+	.account h2 {margin-top:0.5em;}
+	h1.clear {margin:1.5em 0 0 0; border-bottom:1px dotted #eee;}
+</style>
+
+<h1 class="clear">Credit Card</h1>
+<div class="account">
+	<h2>FNBSTL</h2>
+	<p><strong>Total:</strong> ${{ card_total|intcomma }}</p>
+	<p><strong>Last Bill:</strong> {{ last_bill }} </p>
+</div>
+
+<div class="account">
+	<h2>US</h2>
+	<p><strong>Total:</strong> ${{ alt_card_total|intcomma }}</p>
+	<p><strong>Last Bill:</strong> {{ alt_last_bill }} </p>
+</div>
+
+
+<h1 class="clear">Bank</h1>
+<div class="account">
+	<h2>FNBSTL</h2>
+	<p><strong>Balance:</strong> ${{ checking_balance|intcomma }}</p>
+	<p><strong>Live Balance:</strong> ${{ live_balance|intcomma }} </p>
+</div>
+
+<div class="account">
+	<h2>US</h2>
+	<p><strong>Balance:</strong> ${{ alt_checking_balance|intcomma }}</p>
+	<p><strong>Live Balance:</strong> ${{ alt_live_balance|intcomma }} </p>
+</div>
+
+<h1 class="clear">Analysis {{ year }} </h1>
+<table>
+	<tr>
+		<th>Category</th>
+		<th>Jan.</th>
+		<th>Feb.</th>
+		<th>March</th>
+		<th>Apr.</th>
+		<th>May</th>
+		<th>June</th>
+		<th>July</th>
+		<th>Aug.</th>
+		<th>Sept.</th>
+		<th>Oct.</th>
+		<th>Nov.</th>
+		<th>Dec.</th>
+	</tr>
+
+	{% for category in categories|dictsort:"title" %}
+	<tr>
+		<td><strong><a href="/expense/{{ category.title|slugify }}/?year={{ year }}">{{ category.title }}</a></strong></td>
+		{% for data in category.yeardata %}
+			<td>{{ data|floatformat:"2"|intcomma }}</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+	<tr class="highlight">
+		<td><strong>Total</strong></td>
+		{% for t in totals %}
+			<td><strong>{{ t|floatformat:"2"|intcomma }}</strong></td>
+		{% endfor %}
+	</tr>
+
+	<tr><td colspan="13">&nbsp;</td></tr>
+
+	{% for category in income_categories|dictsort:"id" %}
+	<tr>
+		<td><strong><a href="/income/{{ category.title|slugify }}/?year={{ year }}">{{ category.title }}</a></strong></td>
+		{% for data in category.yeardata %}
+			<td>{{ data|floatformat:"2"|intcomma }}</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+	<tr class="highlight">
+		<td><strong>Total</strong></td>
+		{% for t in income_totals %}
+			<td><strong>{{ t|floatformat:"2"|intcomma }}</strong></td>
+		{% endfor %}
+	</tr>
+
+	<tr><td colspan="13">&nbsp;</td></tr>
+
+	<tr class="bold">
+		<td><strong>Net</strong></td>
+		{% for n in net %}
+			<td>{% if forloop.counter <= month %}{{ n|floatformat:"2"|intcomma }}{% endif %}</td>
+		{% endfor %}
+	</tr>
+	<tr class="highlight bold">
+		<td><strong>Saved</strong></td>
+		{% for p in percentages %}
+			<td>{% if p %}{{ p|floatformat:"2" }}%{% endif %}</td>
+		{% endfor %}
+	</tr>
+
+	<tr><td colspan="13">&nbsp;</td></tr>
+
+	<tr>
+		<td><strong>Cost Index</strong></td>
+		{% for i in cost_index %}
+			<td>{% if i and forloop.counter < month %}{{ i|floatformat:"2" }}{% endif %}</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td><strong>Income Index</strong></td>
+		{% for i in income_index %}
+			<td>{% if i and forloop.counter < month %}{{ i|floatformat:"2" }}{% endif %}</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td><strong>Savings Index</strong></td>
+		{% for i in savings_index %}
+			<td>{% if i and forloop.counter < month %}{{ i|floatformat:"2" }}{% endif %}</td>
+		{% endfor %}
+	</tr>
+</table>
+
+<h2>Projected Annual</h2>
+<p><strong>Projected Income:</strong> ${{ projected_income|floatformat:"2"|intcomma }}</p>
+<p><strong>Projected Costs:</strong> ${{ projected_costs|floatformat:"2"|intcomma }}</p>
+<p><strong>Projected Savings:</strong> ${{ projected_savings|floatformat:"2"|intcomma }}</p>
+
+<h2>YTD</h2>
+<p><strong>YTD Income</strong> ${{ ytd_income|floatformat:"2"|intcomma }}</p>
+<p><strong>YTD Costs</strong> ${{ ytd_expenses|floatformat:"2"|intcomma }}</p>
+<p><strong>YTD Savings</strong> ${{ ytd_savings|floatformat:"2"|intcomma }}</p>
+
+{% endblock content %}

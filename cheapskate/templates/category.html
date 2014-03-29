@@ -1,0 +1,39 @@
+{% extends "admin/base_site.html" %}
+{% load humanize %}
+{% block title %}Checkbook Report | Django site admin{% endblock %}
+
+{% block content %}
+
+<style type="text/css">
+    .highlight {background: #efefef;}
+    .bold {font-weight:bold;}
+    .account {float:left; height:auto; overflow:hidden; width:25%; margin: 0 1em 1em 0;}
+    .account h2 {margin-top:0.5em;}
+    h1.clear {margin:1.5em 0 0 0; border-bottom:1px dotted #eee;}
+</style>
+
+<h1 class="clear">{{ category.title }} {{ year }}</h1>
+
+<table>
+    <thead>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Date</th>
+    </thead>
+    <tbody>
+    {% for obj in objs %}
+        <tr>
+            <td>{{ obj.title }} {% if obj.notes %}({{ obj.notes }}){% endif %}</td>
+            <td>${{ obj.amount|floatformat:"2"|intcomma:"2" }}</td>
+            <td>{{ obj.date }}</td>
+        </tr>
+    {% endfor %}
+        <tr>
+            <td><b>Total</b></td>
+            <td><b>${{ total|floatformat:"2"|intcomma:"2" }}</b></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock content %}

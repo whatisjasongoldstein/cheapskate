@@ -1,0 +1,19 @@
+{% load humanize %}
+<tr>
+    <td><a href="{{ obj.get_absolute_url }}">{{ obj.date }}</a></td>
+    <td class="amount">For ${{ obj.amount|floatformat:2|intcomma }}</td>
+    <td>Linked to ${{ obj.total_charges|floatformat:2|intcomma }}</td>
+    <td>{{ obj.balances }}</td>
+    <td>
+        {% if not obj.is_paid %}
+        <button alt="Paid bill"
+            formaction="."
+            form="listchangeform"
+            formmethod="POST"
+            name="markpaid"
+            value="{{ obj.id }}">
+            <i class="fa fa-dollar"></i>
+        </button>
+        {% endif %}
+    </td>
+</tr>

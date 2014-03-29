@@ -1,0 +1,70 @@
+$break-stacked: 480px;
+
+
+.button, 
+button {
+    display: inline-block;
+    padding: 0.2em 0.5em;
+    line-height: 1.5;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+    box-shadow: inset 0 0.75em 0.75em white;
+    text-decoration: none;
+    color: black;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.simple-form {
+    width: calc(100% - 40px);
+    max-width: 640px;
+    margin: 0 auto;
+
+    label {
+        vertical-align: top;
+        width: 100px;
+        display: inline-block;
+        padding-right: 10px;
+        box-sizing: border-box;
+        text-align: right;
+        @media (max-width: $break-stacked) {
+            text-align: left;
+            width: auto;
+            display: block;
+        }
+    }
+    
+    input, textarea, select, .widget {
+        width: calc(100% - 100px);
+        display: inline-block;
+        @media (max-width: $break-stacked) {
+            display: block;
+            width: 100%;
+        }    
+    }
+
+    .errorlist {
+        list-style-type: none;
+        font-size: 0.85rem;
+        font-weight: 900;
+        color: maroon;
+        padding: 0;
+        text-align: right;
+        margin: 1rem 0 0 0;
+
+        & + * {
+            margin-top: 0;
+        }
+    }
+}
+
+input, textarea, select {
+    padding: 0.25rem;
+    line-height: 1.5;
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+    box-sizing: border-box;
+}
