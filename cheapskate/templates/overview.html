@@ -20,16 +20,16 @@
         <li id="{{ month.name|lower }}">
             <h2>{{ month.name }}</h2>
             <ol class="group">
-            {% for category in month.expense_categories %}
-                <li><span class="title">{{ category.title }}</span> {{ category.total|floatformat:2|intcomma }}</li>
-            {% endfor %}
+                {% for category in month.expense_categories %}
+                    <li><span class="title">{{ category.title }}</span> {{ category.total|floatformat:2|intcomma }}</li>
+                {% endfor %}
                 <li class="total"><span class="title">Total</span> {{ month.totals.expenses|floatformat:2|intcomma }}</li>
             </ol>
             <ol class="group">
-            {% for category in month.income_categories %}
-                <li><span class="title">{{ category.title }}</span> {{ category.total|floatformat:2|intcomma }}</li>
+                {% for category in month.income_categories %}
+                    <li><span class="title">{{ category.title }}</span> {{ category.total|floatformat:2|intcomma }}</li>
+                {% endfor %}
                 <li class="total"><span class="title">Total</span> {{ month.totals.income|floatformat:2|intcomma }}</li>
-            {% endfor %}
             </ol>
             <ul class="group shade">
                 <li class="total"><span class="title">Net</span>{{ month.totals.net|floatformat:2|intcomma }}</b></li>
