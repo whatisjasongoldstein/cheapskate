@@ -146,6 +146,9 @@ CACHES = {
 PIPELINE_DISABLE_WRAPPER = True
 PIPELINE_SASS_BINARY = '/usr/bin/env sassc'
 
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
+
 PIPELINE_COMPILERS = (
   'pipeline.compilers.sass.SASSCompiler',
   'pipeline.compilers.es6.ES6Compiler',
