@@ -63,6 +63,10 @@ $break-stack: 600px;
     margin-bottom: 1rem;
 }
 
+.list-view nav [name="search"] {
+    max-width: 50%;
+}
+
 .list-view .pagination {
     margin: 1rem 0;
 }
