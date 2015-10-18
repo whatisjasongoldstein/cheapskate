@@ -92,7 +92,7 @@ class Charge(models.Model):
             query = query | Q(amount=num_term)
         except ValueError:
             pass
-        return cls.objects.filter(query)
+        return cls.objects.filter(query).order_by("-date")
 
 
 class CCBill(models.Model):
@@ -181,7 +181,7 @@ class Deposit(models.Model):
             query = query | Q(amount=num_term)
         except ValueError:
             pass
-        return cls.objects.filter(query)
+        return cls.objects.filter(query).order_by("-date")
 
 
 class Withdrawal(models.Model):
@@ -213,5 +213,5 @@ class Withdrawal(models.Model):
             query = query | Q(amount=num_term) | Q(checkno=num_term)
         except ValueError:
             pass
-        return cls.objects.filter(query)
+        return cls.objects.filter(query).order_by("-date")
 
