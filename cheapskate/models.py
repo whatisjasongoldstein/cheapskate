@@ -62,7 +62,7 @@ class Charge(models.Model):
     """ A credit card change. """
     title = models.CharField(max_length=250)
     amount = models.FloatField()
-    date = models.DateField()
+    date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
     category = models.ForeignKey(ExpenseCategory)
     paid = models.BooleanField(default=False)
@@ -98,7 +98,7 @@ class Charge(models.Model):
 class CCBill(models.Model):
     """ A credit card bill. """
     amount = models.FloatField()
-    date = models.DateField()
+    date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
     charges = models.ManyToManyField('Charge', blank=True) #, limit_choices_to={'paid':False}, )
     account = models.ForeignKey(Account)
@@ -154,7 +154,7 @@ class Deposit(models.Model):
     """ Into a checking account. """
     title = models.CharField(max_length=250)
     amount = models.FloatField()
-    date = models.DateField()
+    date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
     category = models.ForeignKey(IncomeCategory, blank=True, null=True)
     account = models.ForeignKey(Account, limit_choices_to={'kind':'checking'})
@@ -188,7 +188,7 @@ class Withdrawal(models.Model):
     """ Out of a checking account. """
     title = models.CharField(max_length=250)
     amount = models.FloatField()
-    date = models.DateField()
+    date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
     category = models.ForeignKey(ExpenseCategory, blank=True, null=True)
     checkno = models.IntegerField("Check No.", blank=True, null=True)
