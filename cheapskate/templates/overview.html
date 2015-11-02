@@ -38,7 +38,7 @@
                     <b {% if num %}
                         class="{% if num < 0 %}danger
                                 {% elif num < 15 %}warning
-                                {% elif num > 20 %}good
+                                {% elif num >= 20 %}good
                             {% endif %}"
                     {% endif %}>
                     {{ month.totals.percent }}{% if num %}%{% endif %}</b>
