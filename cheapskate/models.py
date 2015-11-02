@@ -100,7 +100,7 @@ class CCBill(models.Model):
     amount = models.FloatField()
     date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
-    charges = models.ManyToManyField('Charge', blank=True) #, limit_choices_to={'paid':False}, )
+    charges = models.ManyToManyField('Charge', blank=True)
     account = models.ForeignKey(Account)
 
     def __unicode__(self):
