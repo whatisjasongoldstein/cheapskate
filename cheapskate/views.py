@@ -189,6 +189,12 @@ class CCBillView(ObjectBaseView):
     model = CCBill
     form_cls = CCBillForm
 
+    @cached_property
+    def post_save_redirect(self):
+        if self.request.POST.get("save_and_create"):
+            return self.model.get_create_url()
+        return self.request.path
+
 
 @staff_member_required
 def income_category(request, slug):
