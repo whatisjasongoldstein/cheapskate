@@ -158,7 +158,7 @@ import pipeline_helpers
 PIPELINE_CSS = pipeline_helpers.find_css()
 PIPELINE_JS = pipeline_helpers.find_js()
 
-if 'RAVEN_DNS_CHEAPSKATE' in os.environ:
+if 'RAVEN_DNS_CHEAPSKATE' in os.environ and not DEBUG:
     import raven
     INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
     RAVEN_CONFIG = {
