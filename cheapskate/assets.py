@@ -17,7 +17,6 @@ PIPELINE_JS = {
             "js/underscore-min.js",
             "js/helpers.es6",
             "js/widgets.es6",
-            "js/overview.es6",
             "js/credit-card-admin.es6",
         ),
         'output_filename': 'js/app.js',
