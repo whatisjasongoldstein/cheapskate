@@ -61,23 +61,30 @@ class Dashboard(object):
         today = datetime.date.today()
         self.year = int(year or today.year)
         self.months = [Month(i, self.year) for i in xrange(1, 13)]
+        self.past_months = [m for m in self.months if m.index < today.month]
 
-        self.ytd = {
-            "income": sum([m.totals["income"] for m in self.months]),
-            "expenses": sum([m.totals["expenses"] for m in self.months]),
-            "net": sum([m.totals["net"] for m in self.months]),
+    @cached_property
+    def ytd(self):
+        data = {
+            "income": sum([m.totals["income"] for m in self.past_months]),
+            "expenses": sum([m.totals["expenses"] for m in self.past_months]),
+            "net": sum([m.totals["net"] for m in self.past_months]),
         }
-        if self.ytd["income"]:
-            self.ytd["percent"] = int(round((self.ytd["net"] / self.ytd["income"]) * 100))
+        if data["income"]:
+            data["percent"] = int(round((data["net"] / data["income"]) * 100))
+        return data
 
-        past_months =  [m for m in self.months if m.index < today.month]
-        num_months = len(past_months)
-        self.projected = {
-            "income": sum([m.totals["income"] for m in self.months]) / num_months * 12,
-            "expenses": sum([m.totals["expenses"] for m in self.months]) / num_months * 12,
-            "net": sum([m.totals["net"] for m in self.months]) / num_months * 12,
+    @cached_property
+    def projected(self):
+        num_months = len(self.past_months)
+        data = {
+            "income": sum([m.totals["income"] for m in self.past_months]) / num_months * 12,
+            "expenses": sum([m.totals["expenses"] for m in self.past_months]) / num_months * 12,
+            "net": sum([m.totals["net"] for m in self.past_months]) / num_months * 12,
         }
-        if self.projected["income"]:
-            self.projected["percent"] = int(round((self.projected["net"] / self.projected["income"]) * 100))
+        if data["income"]:
+            data["percent"] = int(round((data["net"] / data["income"]) * 100))
+        return data
+
 
 
