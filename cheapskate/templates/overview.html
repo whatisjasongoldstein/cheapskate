@@ -9,7 +9,7 @@
             <option {% if year == dashboard.year %}selected{% endif %} value="{% url "index" %}?year={{ year }}">{{ year }}</option>
         {% endfor %}
     </select>
-    <select id="year-switch" data-widget="anchor-selector">
+    <select id="switch-month" data-widget="anchor-selector">
         {% for month in dashboard.months %}
             <option value="#{{ month.name|lower }}">{{ month.name }}</option>
         {% endfor %}
