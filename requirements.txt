@@ -6,4 +6,4 @@ python-memcached==1.57
 django-debug-toolbar==1.3.2
 libsass==0.8.3
 raven==5.8.1
-webassets_babel==0.3.0
+-e git+git@github.com:whatisjasongoldstein/webassets-babel.git@0.4.0#egg=webassets_babel

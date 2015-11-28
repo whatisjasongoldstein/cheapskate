@@ -16,6 +16,7 @@ register("app_styles", styles)
 
 
 scripts = Bundle(
+    "js/require.js",
     "js/underscore.js",
     "js/helpers.es6",
     "js/widgets.es6",
