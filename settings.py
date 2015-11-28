@@ -102,9 +102,11 @@ INSTALLED_APPS = (
     'cheapskate',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'debug_toolbar',
     'pipeline',
 )
+
+if DEBUG:
+    INSTALLED_APPS += ('debug_toolbar', )
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
