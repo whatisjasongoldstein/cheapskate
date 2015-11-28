@@ -14,6 +14,7 @@ PIPELINE_CSS = {
 PIPELINE_JS = {
     'scripts': {
         'source_filenames': (
+            "js/require.js",
             "js/underscore-min.js",
             "js/helpers.es6",
             "js/widgets.es6",
