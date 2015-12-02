@@ -114,7 +114,7 @@ define("cheapskate/credit-card-charge-filter", ["underscore", "cheapskate/helper
 requirejs(["cheapskate/credit-card-charge-filter"], function(Component){
     let el = document.querySelector("[data-credit-card-charge-filter]");
     if (el) {
-        window.creditCardChargeFilter = new Component({
+        var creditCardChargeFilter = new Component({
             el: el, 
             amountEl: document.getElementById("id_amount")
         });

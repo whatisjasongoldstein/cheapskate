@@ -68,7 +68,7 @@ STATICFILES_FINDERS = (
     'pipeline.finders.PipelineFinder',
 )
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ["CHEAPSKATE_SECRET_KEY"]
