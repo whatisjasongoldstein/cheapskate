@@ -193,7 +193,7 @@ class CCBillView(ObjectBaseView):
     def post_save_redirect(self):
         if self.request.POST.get("save_and_create"):
             return self.model.get_create_url()
-        return self.request.path
+        return self.instance.get_absolute_url()
 
 
 @staff_member_required
