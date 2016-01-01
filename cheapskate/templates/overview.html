@@ -71,7 +71,9 @@
                 </tr>
                 <tr>
                     <th>Percent</th>
+                    {% if dashboard.ytd.percent %}
                     <td>{{ dashboard.ytd.percent }}%</td>
+                    {% endif %}
                 </tr>
             </tbody>
         </table>
@@ -104,11 +106,13 @@
                 <tr>
                     <th>Percent</th>
                     {% with dashboard.projected.percent as num %}
+                    {% if num %}
                         <td class="{% if num < 5 %}danger
                                     {% elif num < 10 %}warning
                                     {% elif num > 15 %}good
                                 {% endif %}
                         ">{{ num }}%</td>
+                    {% endif %}
                     {% endwith %}
                 </tr>
             </tbody>
