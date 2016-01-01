@@ -4,10 +4,17 @@
 <div class="list-view">
     <nav>
         <a class="button" href="{{ create_url }}">New</a>
-        <button>Filter</button>
+        {% if filter_by %}
+            <button data-widget="toggler" data-target="#filters">Filter</button>
+        {% endif %}
         <form class="inline-form" action="." method="GET">
         <input type="text" name="search" placeholder="Search" {% if search_term %}value="{{ search_term }}"{% endif %} />
-        <button><i class="fa fa-search"></i></button>   
+        <button><i class="fa fa-search"></i></button>
+
+        {% if filter_by %}
+        {% include "filters.html" %}
+        {% endif %}
+
         </form>
     </nav>
     {# <input type="file" accept="image/*"> #}

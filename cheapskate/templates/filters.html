@@ -1,0 +1,39 @@
+{% load to_int from helpers %}
+
+<fieldset class="filters" id="filters" {% if not filters%}style="display:none"{% endif %}>
+    {% if "paid" in filter_by %}
+        <span class="filter">
+        <label for="paid_filter">Paid</label>
+        <select name="paid" id="paid_filter">
+            <option value="">All</option>
+            <option {% if filters.paid == "1" %}selected{% endif %} value="1">Yes</option>
+            <option {% if filters.paid == "0" %}selected{% endif %} value="0">No</option>
+        </select>
+        </span>
+    {% endif %}
+
+    {% if "category" in filter_by %}
+        <span class="filter">
+
+        <label for="category_filter">Category</label>
+        <select name="category_id" id="category_filter">
+            <option value="">All</option>
+            {% for category in categories %}
+                <option {% if filters.category_id|to_int == category.id %}selected{% endif %} 
+                    value="{{ category.id }}">{{ category.title }}</option>
+            {% endfor %}
+        </select>
+        </span>
+    {% endif %}
+
+    {% if "date" in filter_by %}
+        <span class="filter">
+
+        <label for="date">Date Range</label>
+        <input type="date" name="date__gte" {% if filters.date__gte %}value="{{ filters.date__gte }}"{% endif %} > to
+        <input type="date" name="date__lte" {% if filters.date__lte %}value="{{ filters.date__lte }}"{% endif %} >
+        </span>
+    {% endif %}
+
+    <button><i class="fa fa-refresh"></i></button>
+</fieldset>

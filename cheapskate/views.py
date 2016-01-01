@@ -67,7 +67,7 @@ class ListBaseView(StaffRequiredMixin, View):
         get_params_items = self.request.GET.items()
         for key, value in get_params_items:
             bare_key = key.split("_")[0]
-            if bare_key not in self.filter_by:
+            if bare_key not in self.filter_by or value == "":
                 continue
             filters[key] = value
         return filters
@@ -97,6 +97,12 @@ class ListBaseView(StaffRequiredMixin, View):
         return page
 
     @cached_property
+    def catergory_choices(self):
+        if hasattr(self.model, "category"):
+            return self.model.category.get_queryset()
+        return None
+
+    @cached_property
     def object_list(self):
         return self.page.object_list
 
@@ -112,6 +118,7 @@ class ListBaseView(StaffRequiredMixin, View):
             "create_url": self.create_url,
             "filter_by": self.filter_by,
             "filters": self.queryset_filters,
+            "categories": self.catergory_choices,
         })
 
 

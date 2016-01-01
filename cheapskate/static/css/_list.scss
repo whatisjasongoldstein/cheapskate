@@ -1,9 +1,10 @@
 $break-stack: 600px;
+$list-width: 900px;
 
 .list-view {
     margin: 2rem auto;
     width: calc(100% - 40px);
-    max-width: 900px;
+    max-width: $list-width;
 }
 
 .list-view .object-list {
@@ -69,4 +70,24 @@ $break-stack: 600px;
 
 .list-view .pagination {
     margin: 1rem 0;
+}
+
+.list-view .filters {
+    border: 0;
+    border-top: 1px dotted #ccc;
+    margin-top: 1em;
+    padding: 1em 0;
+}
+
+.list-view .filters > span {
+    margin-left: 1em;
+    display: inline-block;
+    &:first-child {
+        margin-left: 0;
+    }
+    @media (max-width: $list-width) {
+        display: block;
+        line-height: 2;
+        margin: 1em 0;
+    }
 }

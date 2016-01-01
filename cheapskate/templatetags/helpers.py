@@ -8,3 +8,11 @@ register = template.Library()
 @register.filter
 def jsonify(data):
     return mark_safe(json.dumps(data, indent=2))
+
+@register.filter
+def to_int(value):
+    try:
+        return int(value)
+    except ValueError:
+        return None
+    return

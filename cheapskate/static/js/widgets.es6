@@ -1,7 +1,8 @@
 /**
  * No dependencies
  */
-(function() {
+requirejs(["underscore"], function(_){
+
     // Link selectors
     document.addEventListener("change", function(e) {
         if (e.target.getAttribute("data-widget") === "url-selector") {
@@ -30,5 +31,19 @@
             }
         }
     });
+
+    // Toggles elements that match a selector
+    document.addEventListener("click", function(e) {
+        if (e.target.getAttribute("data-widget") === "toggler") {
+            var selector = e.target.getAttribute("data-target");
+            var els = document.querySelectorAll(selector);
+            _.each(els, function(el, i, collection){
+                var display = el.style.display;
+                el.style.display = (display === "none") ? "block" : "none";
+            });
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    });
     
-})();
+});
