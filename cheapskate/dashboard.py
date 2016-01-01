@@ -59,9 +59,18 @@ class Dashboard(object):
 
     def __init__(self, year=None):
         today = datetime.date.today()
-        self.year = int(year or today.year)
+
+        try:
+            year = int(year)
+        except TypeError:
+            year = None
+        self.year = year or today.year
+
         self.months = [Month(i, self.year) for i in xrange(1, 13)]
-        self.past_months = [m for m in self.months if m.index < today.month]
+
+        self.past_months = self.months
+        if self.year == today.year:
+            self.past_months = [m for m in self.months if m.index < today.month]
 
     @cached_property
     def ytd(self):
@@ -77,6 +86,13 @@ class Dashboard(object):
     @cached_property
     def projected(self):
         num_months = len(self.past_months)
+        if not num_months:
+            return {
+                "income": 0,
+                "expenses": 0,
+                "net": 0,
+            }
+
         data = {
             "income": sum([m.totals["income"] for m in self.past_months]) / num_months * 12,
             "expenses": sum([m.totals["expenses"] for m in self.past_months]) / num_months * 12,
