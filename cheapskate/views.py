@@ -3,6 +3,8 @@ from __future__ import absolute_import
 import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.db.models.fields import Field
+
 from django.contrib import messages
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -42,6 +44,7 @@ class ListBaseView(StaffRequiredMixin, View):
     model = None
     template = "list.html"
     row_template = None
+    filter_by = []
 
     @cached_property
     def create_url(self):
@@ -52,10 +55,28 @@ class ListBaseView(StaffRequiredMixin, View):
         return self.request.GET.get("search", None)
 
     @cached_property
+    def queryset_filters(self):
+        """
+        For any get parameters that match the filter_by
+        list, pass the key/values straight into the ORM.
+
+        The ORM handles escaping, so the worst thing that
+        happens is the whole rule gets ignored.
+        """
+        filters = {}
+        get_params_items = self.request.GET.items()
+        for key, value in get_params_items:
+            bare_key = key.split("_")[0]
+            if bare_key not in self.filter_by:
+                continue
+            filters[key] = value
+        return filters
+
+    @cached_property
     def queryset(self):
         if self.search_term and hasattr(self.model, "search"):
             return self.model.search(self.search_term).select_related()
-        return self.model.objects.all().order_by("-date").select_related()
+        return self.model.objects.filter(**self.queryset_filters).order_by("-date").select_related()
 
     @cached_property
     def previous_page_url(self):
@@ -89,6 +110,8 @@ class ListBaseView(StaffRequiredMixin, View):
             "search_term": self.search_term,
             "title": unicode(self.model._meta.verbose_name_plural.title()),
             "create_url": self.create_url,
+            "filter_by": self.filter_by,
+            "filters": self.queryset_filters,
         })
 
 
@@ -146,6 +169,7 @@ class ObjectBaseView(StaffRequiredMixin, View):
 class ChargeListView(ListBaseView):
     model = Charge
     row_template = "rows/charge-row.html"
+    filter_by = ["category", "date", "paid"]
 
 
 class ChargeView(ObjectBaseView):
@@ -156,6 +180,7 @@ class ChargeView(ObjectBaseView):
 class DepositListView(ListBaseView):
     model = Deposit
     row_template = "rows/deposit-row.html"
+    filter_by = ["category", "date"]
 
 
 class DepositView(ObjectBaseView):
@@ -166,6 +191,7 @@ class DepositView(ObjectBaseView):
 class WithdrawalListView(ListBaseView):
     model = Withdrawal
     row_template = "rows/withdrawal-row.html"
+    filter_by = ["category", "date"]
 
 
 class WithdrawalView(ObjectBaseView):
