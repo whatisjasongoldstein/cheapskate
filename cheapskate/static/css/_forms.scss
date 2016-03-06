@@ -61,7 +61,7 @@ button {
     }
 }
 
-input, textarea, select {
+input:not([type=file]), textarea, select {
     padding: 0.25rem;
     line-height: 1.5;
     border: 1px solid #ccc;

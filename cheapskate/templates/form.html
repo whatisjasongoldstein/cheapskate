@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="." method="POST" class="simple-form">
+<form action="." method="POST" class="simple-form" enctype="multipart/form-data">
     {% csrf_token %}
 
     {% spaceless %}

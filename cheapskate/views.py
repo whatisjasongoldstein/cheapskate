@@ -142,7 +142,7 @@ class ObjectBaseView(StaffRequiredMixin, View):
 
     @cached_property
     def form(self):
-        return self.form_cls(self.request.POST or None, instance=self.instance)
+        return self.form_cls(self.request.POST or None, self.request.FILES or None, instance=self.instance)
 
     @cached_property
     def post_save_redirect(self):
