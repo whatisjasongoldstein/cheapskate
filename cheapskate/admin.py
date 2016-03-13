@@ -37,7 +37,7 @@ class DepositAdmin(admin.ModelAdmin):
 class WithdrawalAdmin(admin.ModelAdmin):
 	list_display = ['title', 'amount', 'date', 'category', 'account']
 	list_editable = ['category',]
-	list_filter = ['date','account']
+	list_filter = ['date','account', 'category',]
 	ordering = ['-date']
 	search_fields = ['title', 'amount']
 
