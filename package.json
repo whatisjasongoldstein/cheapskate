@@ -1,0 +1,33 @@
+{
+  "name": "cheapskate",
+  "version": "1.0.0",
+  "description": "Checkbook app I made for myself",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "gulp": "3.9.1",
+    "gulp-notify": "2.2.0",
+    "gulp-rename": "1.2.2",
+    "gulp-sass": "2.3.1",
+    "gulp-sourcemaps": "2.0.0-alpha",
+    "gulp-util": "^3.0.7",
+    "underscore": "^1.8.3",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whatisjasongoldstein/cheapskate.git"
+  },
+  "author": "Jason Goldstein",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/whatisjasongoldstein/cheapskate/issues"
+  },
+  "homepage": "https://github.com/whatisjasongoldstein/cheapskate#readme"
+}

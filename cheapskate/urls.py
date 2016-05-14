@@ -12,8 +12,7 @@ from cheapskate import views
 admin.autodiscover()
 
 
-urlpatterns = patterns('',
-    # Examples:
+urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^charges/$', views.ChargeListView.as_view(), name='charge_list'),
     url(r'^withdrawals/$', views.WithdrawalListView.as_view(), name='withdrawal_list'),
@@ -39,5 +38,5 @@ urlpatterns = patterns('',
     url('^', include('django.contrib.auth.urls')),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-) + staticfiles_urlpatterns() + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + staticfiles_urlpatterns() + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

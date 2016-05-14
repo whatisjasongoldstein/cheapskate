@@ -65,10 +65,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'pipeline.finders.PipelineFinder',
 )
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "dist")
+]
+
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.CachedStaticFilesStorage"
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ["CHEAPSKATE_SECRET_KEY"]
@@ -95,7 +98,6 @@ INSTALLED_APPS = (
     'cheapskate',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'pipeline',
 )
 
 if DEBUG:
@@ -137,21 +139,6 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     },
 }
-
-PIPELINE_DISABLE_WRAPPER = True
-PIPELINE_SASS_BINARY = '/usr/bin/env sassc'
-
-PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
-PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
-
-PIPELINE_COMPILERS = (
-  'pipeline.compilers.sass.SASSCompiler',
-  'pipeline.compilers.es6.ES6Compiler',
-)
-
-import pipeline_helpers
-PIPELINE_CSS = pipeline_helpers.find_css()
-PIPELINE_JS = pipeline_helpers.find_js()
 
 if 'RAVEN_DNS_CHEAPSKATE' in os.environ and not DEBUG:
     import raven
