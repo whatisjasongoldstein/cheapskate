@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import json
 import calendar
 import datetime
 
@@ -29,8 +30,8 @@ class Month(object):
         self.name = calendar.month_name[self.index]
         
         self.totals = {
-            "expenses": sum_expense(date__year=self.year, date__month=self.index),
-            "income": sum_income(date__year=self.year, date__month=self.index),
+            "expenses": round(sum_expense(date__year=self.year, date__month=self.index), 2),
+            "income": round(sum_income(date__year=self.year, date__month=self.index), 2),
         }
         self.totals["net"] = self.totals["income"] - self.totals["expenses"]
         if self.totals["income"]:
@@ -43,14 +44,14 @@ class Month(object):
         for category in _expense_categories:
             self.expense_categories.append({
                 "title": category.title,
-                "total": category.total(month=self.index, year=self.year)
+                "total": round(category.total(month=self.index, year=self.year), 2)
             })
 
         self.income_categories = []
         for category in _income_categories:
             self.income_categories.append({
                 "title": category.title,
-                "total": category.total(month=self.index, year=self.year)
+                "total": round(category.total(month=self.index, year=self.year), 2)
             })
         
 
@@ -100,7 +101,21 @@ class Dashboard(object):
         }
         if data["income"]:
             data["percent"] = int(round((data["net"] / data["income"]) * 100))
+        return data        
+
+    @cached_property
+    def chart_json_data(self):
+        data = {
+            "expenses": [],
+            "income": [], 
+            "net": [],
+            "percent": [],
+        }
+        today = datetime.date.today()
+        for month in self.months[0:today.month]:
+            data["expenses"].append(month.totals["expenses"])
+            data["income"].append(month.totals["income"])
+            data["net"].append(month.totals["net"])
+            if "percent" in month.totals:
+                data["percent"].append(month.totals["percent"])
         return data
-
-
-

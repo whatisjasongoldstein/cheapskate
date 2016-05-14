@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load jsonify from helpers %}
 {% block content %}
 
 <div class="overview">
@@ -48,6 +49,9 @@
         </li>            
     {% endfor %}
     </ul>
+
+    <canvas id="myChart" width="400" height="400"></canvas>
+
 
     <div class="year-overview">
         <table>
@@ -118,7 +122,125 @@
             </tbody>
         </table>
 
-    </div>
+    </div>    
 </div>
 
+
 {% endblock content %}
+
+
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript">
+var dashboard = {{ dashboard.chart_json_data|jsonify }}
+
+var ctx = document.getElementById("myChart");
+var expenseColor = "darkorange";
+var incomeColor = "black";
+var netColor = "navy";
+var growthColor = "darkgreen";
+
+var growth = [];
+for (var i = 0; i < dashboard.net.length; i++) {
+    var n = dashboard.net[i];
+    if (i > 0) {
+        n = growth[i - 1] + n;
+    }
+    growth.push(n);
+};
+
+var data = {
+    labels: ["January", "February", "March", "April", "May", "June", "July",
+        "August", "October", "November", "December"],
+    datasets: [
+        {
+            label: "Expenses",
+            fill: false,
+            animateScale: false,
+            lineTension: 0.1,
+            backgroundColor: expenseColor,
+            borderColor: expenseColor,
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: expenseColor,
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: dashboard.percent,
+        },
+        {
+            label: "Income",
+            fill: false,
+            animateScale: false,
+            lineTension: 0.1,
+            backgroundColor: incomeColor,
+            borderColor: incomeColor,
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: incomeColor,
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: incomeColor,
+            pointHoverBorderColor: incomeColor,
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: dashboard.income,
+        },
+        {
+            label: "Net",
+            fill: false,
+            animateScale: false,
+            lineTension: 0.1,
+            backgroundColor: growthColor,
+            borderColor: growthColor,
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: growthColor,
+            pointHoverBorderColor: growthColor,
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: dashboard.net,
+        },
+        {
+            label: "Saving",
+            fill: false,
+            animateScale: false,
+            lineTension: 0.1,
+            backgroundColor: netColor,
+            borderColor: netColor,
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: netColor,
+            pointHoverBorderColor: netColor,
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: growth,
+        }
+    ]
+};
+
+var myLineChart = Chart.Line(ctx, {
+    data: data,
+    options: {
+        responsive: false
+    },
+});
+</script>
+{% endblock scripts %}

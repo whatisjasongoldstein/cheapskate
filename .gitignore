@@ -2,3 +2,4 @@
 /static/
 src
 db.sqlite3
+/dist/*
