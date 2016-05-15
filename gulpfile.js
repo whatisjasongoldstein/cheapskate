@@ -29,9 +29,8 @@ gulp.task('sass', function() {
 gulp.task('scripts', function() {
     var b = browserify({
             "entries": ['static/js/app.js'],
-            debug: true,
             transform: [babelify]
-        })
+        });
     
     return b.bundle()
         .pipe(source('app.min.js'))
@@ -39,7 +38,8 @@ gulp.task('scripts', function() {
         .pipe(sourcemaps.init({loadMaps: true}))
             .on('error', gutil.log)
         .pipe(sourcemaps.write('./maps'))
-        .pipe(gulp.dest('dist/js'));
+        .pipe(gulp.dest('dist/js'))
+        .pipe(notify("Built JS!"));
 });
 
 
