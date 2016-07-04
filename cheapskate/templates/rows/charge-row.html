@@ -3,6 +3,6 @@
     <td><a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></td>
     <td class="amount">${{ obj.amount|floatformat:2|intcomma }}</td>
     <td>{{ obj.date|date:"M d, 'y" }}</td>
-    <td>{{ obj.category }}</td>
+    <td>{{ obj.category|default:"" }}</td>
     <td class="paid"><i class="fa {{ obj.paid|yesno:"fa-check-circle-o,fa-circle-o" }}"></i></td>
 </tr>
