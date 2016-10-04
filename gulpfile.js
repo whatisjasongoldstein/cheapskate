@@ -8,10 +8,26 @@ var babelify = require('babelify');
 var source = require('vinyl-source-stream');
 var gutil = require('gulp-util');
 var buffer = require('vinyl-buffer');
+var browserSync = require('browser-sync');
+var reload = browserSync.reload;
+var plumber = require('gulp-plumber');
+
+
+var onError = function(err) {
+    notify.onError({
+        title:    "Gulp",
+        subtitle: "Failure!",
+        message:  "Error: <%= error.message %>",
+        sound:    "Beep"
+    })(err);
+
+    this.emit('end');
+};
 
 
 gulp.task('sass', function() {
     return gulp.src('static/**/*.scss')
+        .pipe(plumber({errorHandler: onError}))
         .pipe(sourcemaps.init())
         .pipe(sass({
             follow: true
@@ -33,6 +49,7 @@ gulp.task('scripts', function() {
         });
     
     return b.bundle()
+        .on('error', onError)
         .pipe(source('app.min.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
@@ -43,10 +60,14 @@ gulp.task('scripts', function() {
 });
 
 
-gulp.task('watch', function() {
-    gulp.watch('**/*.scss', ['sass']);
-    gulp.watch('**/*.js', ['scripts']);
+gulp.task('watch', ['default'], function() {
+    gulp.watch('**/*.scss', ['sass', reload]);
+    gulp.watch('**/*.js', ['scripts', reload]);
+    browserSync.init({
+        notify: true,
+        proxy: "localhost:8000"
+    });
+    gulp.watch(['./**/*.{html,py}'], reload);
 });
-
 
 gulp.task("default", ["sass", "scripts"]);
