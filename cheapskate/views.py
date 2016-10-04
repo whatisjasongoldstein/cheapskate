@@ -33,7 +33,7 @@ class StaffRequiredMixin(object):
 def index(request):
     dashboard = Dashboard(year=request.GET.get("year"))
     years = xrange(datetime.date.today().year, Charge.objects.filter(date__isnull=False).first().date.year - 1, -1)
-    return render(request, "overview.html", 
+    return render(request, "index.html", 
         {
             "dashboard": dashboard,
             "years": years,
