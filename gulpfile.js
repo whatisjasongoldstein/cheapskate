@@ -11,6 +11,7 @@ var buffer = require('vinyl-buffer');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 var plumber = require('gulp-plumber');
+var spawn = require('child_process').spawn;
 
 
 var onError = function(err) {
@@ -60,14 +61,19 @@ gulp.task('scripts', function() {
 });
 
 
-gulp.task('watch', ['default'], function() {
-    gulp.watch('**/*.scss', ['sass', reload]);
-    gulp.watch('**/*.js', ['scripts', reload]);
-    browserSync.init({
-        notify: true,
-        proxy: "localhost:8000"
+gulp.task('serve:backend', function () {
+    var devServerPort = process.env.PORT || 8000;
+    process.env.PYTHONUNBUFFERED = 1;
+    process.env.PYTHONDONTWRITEBITECODE = 1;
+    spawn('python', ['manage.py', 'runserver', '0.0.0.0:' + devServerPort], {
+        stdio: 'inherit'
     });
-    gulp.watch(['./**/*.{html,py}'], reload);
+});
+
+gulp.task('dev', ["sass", "scripts"], function() {
+    gulp.start('serve:backend');
+    gulp.watch('**/*.scss', ['sass']);
+    gulp.watch('**/*.js', ['scripts']);
 });
 
 gulp.task("default", ["sass", "scripts"]);
