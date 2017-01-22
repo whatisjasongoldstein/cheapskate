@@ -32,8 +32,8 @@ urlpatterns = [
     url(r'^credit-card-bills/(?P<id>[\d]+)/$', views.CCBillView.as_view(), name='edit_ccbill'),
 
     # To refactor
-    url(r'^income/(?P<slug>[-\w\d]+)/$', 'cheapskate.views.income_category', name="category"),
-    url(r'^expense/(?P<slug>[-\w\d]+)/$', 'cheapskate.views.expense_category', name="category"),
+    url(r'^income/(?P<slug>[-\w\d]+)/$', views.income_category, name="category"),
+    url(r'^expense/(?P<slug>[-\w\d]+)/$', views.expense_category, name="category"),
 
     url('^', include('django.contrib.auth.urls')),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
