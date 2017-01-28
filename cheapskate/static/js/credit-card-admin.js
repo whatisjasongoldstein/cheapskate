@@ -96,7 +96,7 @@ class CreditCardChargeFilter {
                 <% _.each(data, function(obj){ %>
                     <tr class="<%= obj.selected ? "selected" : "" %>" data-id="<%= obj.id %>">
                         <td><%= obj.title %></td>
-                        <td>\$<%= obj.amount %></td>
+                        <td>\$<%= obj.amount.toFixed(2) %></td>
                         <td><%= obj.category %></td>
                         <td><%= obj.date %></td>
                         <td><a href="<%= obj.url %>" target="_blank"><i class="fa fa-chevron-circle-right"></i></a></td>

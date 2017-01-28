@@ -3,6 +3,7 @@ $break-stack-rows: 550px;
 
 #charge-filter {
     display: inline-block;
+    font-size: 0.9rem;
 
     tbody {
         @media (max-width: $break-stack-rows) {
@@ -32,6 +33,8 @@ $break-stack-rows: 550px;
 
     td {
         padding: 0.5em;
+        box-sizing: border-box;
+        vertical-align: top;
     }
 
     & > input,
@@ -53,9 +56,7 @@ $break-stack-rows: 550px;
 
 
     td {
-        white-space: nowrap;
         overflow: hidden;
-        box-sizing: border-box;
         
         &:first-child {
             width: 25%;
