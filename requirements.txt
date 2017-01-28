@@ -1,7 +1,6 @@
 Django==1.9
 Fabric==1.10.2
 python-memcached==1.57
-django-debug-toolbar==1.4
 libsass==0.8.3
 raven==5.8.1
-jinja2
+django-debug-toolbar==1.6

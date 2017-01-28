@@ -32,7 +32,7 @@ class StaffRequiredMixin(object):
 @staff_member_required
 def index(request):
     dashboard = Dashboard(year=request.GET.get("year"))
-    years = xrange(datetime.date.today().year, Charge.objects.filter(date__isnull=False).first().date.year - 1, -1)
+    years = range(datetime.date.today().year, Charge.objects.filter(date__isnull=False).first().date.year - 1, -1)
     return render(request, "index.html", 
         {
             "dashboard": dashboard,
@@ -76,8 +76,10 @@ class ListBaseView(StaffRequiredMixin, View):
     def queryset(self):
         if self.search_term and hasattr(self.model, "search"):
             return self.model.search(self.search_term).select_related()
+        
+        related_fields = [r for r in ("category", "account") if hasattr(self.model, r)]
         return (self.model.objects.filter(**self.queryset_filters)
-                    .select_related("category", "account")
+                    .select_related(*related_fields)
                     .order_by("-date"))
 
     @cached_property
@@ -116,7 +118,7 @@ class ListBaseView(StaffRequiredMixin, View):
             "next_page_url": self.next_page_url,
             "previous_page_url": self.previous_page_url,
             "search_term": self.search_term,
-            "title": unicode(self.model._meta.verbose_name_plural.title()),
+            "title": str(self.model._meta.verbose_name_plural.title()),
             "create_url": self.create_url,
             "filter_by": self.filter_by,
             "filters": self.queryset_filters,
@@ -133,7 +135,7 @@ class ObjectBaseView(StaffRequiredMixin, View):
     @cached_property
     def title(self):
         if self.instance.id:
-            return unicode(self.instance)
+            return str(self.instance)
         return "Create %s" % self.model._meta.verbose_name.title()
 
     @cached_property

@@ -79,11 +79,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 ROOT_URLCONF = 'cheapskate.urls'
-
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -96,10 +96,8 @@ INSTALLED_APPS = (
     'cheapskate',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'debug_toolbar',
 )
-
-if DEBUG:
-    INSTALLED_APPS += ('debug_toolbar', )
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

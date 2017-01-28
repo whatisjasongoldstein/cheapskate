@@ -73,7 +73,7 @@ class Dashboard(object):
 
         self.months = [Month(i, self.year,
             expense_categories=expense_categories,
-            income_categories=income_categories) for i in xrange(1, 13)]
+            income_categories=income_categories) for i in range(1, 13)]
 
         self.past_months = self.months
         if self.year == today.year:

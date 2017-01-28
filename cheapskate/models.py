@@ -18,14 +18,14 @@ class Account(models.Model):
     bank = models.CharField(max_length=255)
     kind = models.CharField(max_length=255, choices=ACCOUNT_CHOICES)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 
 class ExpenseCategory(models.Model):
     title = models.CharField(max_length=150)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
@@ -47,7 +47,7 @@ class ExpenseCategory(models.Model):
 class IncomeCategory(models.Model):
     title = models.CharField(max_length=150)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def total(self, month=datetime.date.today().month, year=datetime.date.today().year):
@@ -72,7 +72,7 @@ class Charge(models.Model):
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
     do_not_project = models.BooleanField("One-off Event", default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         try:
             text = (u"%s for $%s") % (self.title, self.amount)
         except Exception as e:
@@ -106,7 +106,7 @@ class CCBill(models.Model):
     charges = models.ManyToManyField('Charge', blank=True)
     account = models.ForeignKey(Account)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%(date_sting)s for %(amount)s" % {
                 'date_sting' : str(self.date.month) + " '" + str(self.date.year),
                 'amount' : str(self.amount),
@@ -167,7 +167,7 @@ class Deposit(models.Model):
     def balance(self):
         return calc_balance(self.date, self.account.title)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -201,7 +201,7 @@ class Withdrawal(models.Model):
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
     do_not_project = models.BooleanField("One-off Event", default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):

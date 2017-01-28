@@ -1,4 +1,4 @@
-import urlparse
+from urllib import parse as urlparse
 
 
 def add_url_parameter(url, key, value):
