@@ -76,7 +76,9 @@ class ListBaseView(StaffRequiredMixin, View):
     def queryset(self):
         if self.search_term and hasattr(self.model, "search"):
             return self.model.search(self.search_term).select_related()
-        return self.model.objects.filter(**self.queryset_filters).order_by("-date").select_related()
+        return (self.model.objects.filter(**self.queryset_filters)
+                    .select_related("category", "account")
+                    .order_by("-date"))
 
     @cached_property
     def previous_page_url(self):

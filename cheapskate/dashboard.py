@@ -25,10 +25,12 @@ def sum_expense(**kwargs):
 
 class Month(object):
     
-    def __init__(self, index, year):
+    def __init__(self, index, year, expense_categories=None, income_categories=None):
         self.index = index
         self.year = year
         self.name = calendar.month_name[self.index]
+        _expense_categories = expense_categories or []
+        _income_categories = income_categories or []
         
         self.totals = {
             "expenses": sum_expense(date__year=self.year, date__month=self.index),
@@ -37,9 +39,6 @@ class Month(object):
         self.totals["net"] = self.totals["income"] - self.totals["expenses"]
         if self.totals["income"]:
             self.totals["percent"] = int(round((self.totals["net"] / self.totals["income"]) * 100))
-
-        _expense_categories = ExpenseCategory.objects.all().order_by("title")
-        _income_categories = IncomeCategory.objects.all().order_by("title")
 
         self.expense_categories = []
         for category in _expense_categories:
@@ -68,7 +67,13 @@ class Dashboard(object):
             year = None
         self.year = year or today.year
 
-        self.months = [Month(i, self.year) for i in xrange(1, 13)]
+        # Make this query here once and pass it around.
+        expense_categories = list(ExpenseCategory.objects.all().order_by("title"))
+        income_categories = list(IncomeCategory.objects.all().order_by("title"))
+
+        self.months = [Month(i, self.year,
+            expense_categories=expense_categories,
+            income_categories=income_categories) for i in xrange(1, 13)]
 
         self.past_months = self.months
         if self.year == today.year:

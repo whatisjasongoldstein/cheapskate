@@ -45,7 +45,9 @@ class CCBillForm(forms.ModelForm):
 
         if self.instance.pk:
             current_charges = list(self.instance.charges.values_list("pk", flat=True))
-            charges_qs = Charge.objects.filter(Q(id__in=current_charges) | Q(paid=False))
+            charges_qs = Charge.objects.filter(
+                Q(id__in=current_charges) | Q(paid=False)
+            ).select_related("category")
             self.fields["charges"].widget = JSONSelectMultiple(
                 attrs={"data-credit-card-charge-filter": 1}, 
                 choices=[(obj.id, {
