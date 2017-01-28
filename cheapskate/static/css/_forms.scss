@@ -1,5 +1,5 @@
 $break-stacked: 480px;
-
+$label-width: 115px;
 
 .button, 
 button {
@@ -25,7 +25,7 @@ button {
 
     label {
         vertical-align: top;
-        width: 100px;
+        width: $label-width;
         display: inline-block;
         padding-right: 10px;
         box-sizing: border-box;
@@ -38,7 +38,7 @@ button {
     }
     
     input, textarea, select, .widget {
-        width: calc(100% - 100px);
+        width: calc(100% - #{$label-width});
         display: inline-block;
         @media (max-width: $break-stacked) {
             display: block;
@@ -58,6 +58,10 @@ button {
         & + * {
             margin-top: 0;
         }
+    }
+
+    .helptext {
+        font-size: 0.5em;
     }
 }
 

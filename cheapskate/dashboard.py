@@ -3,13 +3,15 @@ from __future__ import absolute_import
 import calendar
 import datetime
 
+from django.db import models
 from django.utils.functional import cached_property
 
 from .models import Charge, Withdrawal, ExpenseCategory, IncomeCategory, Deposit
 
 
 def sum_amounts(cls, kwargs):
-    return sum(cls.objects.filter(**kwargs).values_list("amount", flat=True))
+    data = cls.objects.filter(**kwargs).aggregate(models.Sum("amount"))
+    return (data["amount__sum"] or 0)  # If QS is empty, this would be None
 
 def sum_income(**kwargs):
     kwargs["category__isnull"] = False
@@ -86,6 +88,8 @@ class Dashboard(object):
     @cached_property
     def projected(self):
         num_months = len(self.past_months)
+        
+        # Don't make assumptions if no months have elapsed.
         if not num_months:
             return {
                 "income": 0,
@@ -93,10 +97,54 @@ class Dashboard(object):
                 "net": 0,
             }
 
+        # Some entries, such as trips or big purchases, aren't
+        # good predictors of future months.
+        
+
+        # Use common events from past months to predict
+        # future months.
+        recurring_kwargs = {
+            "date__year": self.year,
+            "date__month__in": [m.index for m in self.past_months],
+            "do_not_project": False,
+            "category__isnull": False, 
+        }
+
+        # All common events
+        charges = Charge.objects.filter(**recurring_kwargs
+            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
+        withdrawals = Withdrawal.objects.filter(**recurring_kwargs
+            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
+        expenses = charges + withdrawals;
+
+        income = Deposit.objects.filter(**recurring_kwargs
+            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
+
+        # One-off events
+        one_of_kwargs = {
+            "date__year": self.year,
+            "do_not_project": True,
+            "category__isnull": False, 
+        }
+        one_off_charges = Charge.objects.filter(**one_of_kwargs
+            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
+        one_off_withdrawals = Withdrawal.objects.filter(**one_of_kwargs
+            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
+
+        one_off_expenses = one_off_charges + one_off_withdrawals
+        one_off_income = Deposit.objects.filter(**one_of_kwargs
+            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
+
+        # Add the one-offs to the projected totals based
+        # on common events.
+        projected_income = (income / num_months * 12) + one_off_income
+        projected_expenses = (expenses / num_months * 12) + one_off_expenses
+        projected_net = projected_income - projected_expenses
+
         data = {
-            "income": sum([m.totals["income"] for m in self.past_months]) / num_months * 12,
-            "expenses": sum([m.totals["expenses"] for m in self.past_months]) / num_months * 12,
-            "net": sum([m.totals["net"] for m in self.past_months]) / num_months * 12,
+            "income": projected_income,
+            "expenses": projected_expenses,
+            "net": projected_net,
         }
         if data["income"]:
             data["percent"] = int(round((data["net"] / data["income"]) * 100))

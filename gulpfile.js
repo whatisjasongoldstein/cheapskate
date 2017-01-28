@@ -70,10 +70,10 @@ gulp.task('serve:backend', function () {
     });
 });
 
-gulp.task('dev', ["sass", "scripts"], function() {
+gulp.task('dev', function() {
     gulp.start('serve:backend');
-    gulp.watch('**/*.scss', ['sass']);
-    gulp.watch('**/*.js', ['scripts']);
+    gulp.watch('cheapskate/**/*.scss', ['sass']);
+    gulp.watch('cheapskate/**/*.js', ['scripts']);
 });
 
 gulp.task("default", ["sass", "scripts"]);
