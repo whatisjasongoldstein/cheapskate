@@ -1,0 +1,3 @@
+{% load helpers %}
+
+<option value="{{ widget.value }}" data-json="{{ widget.label|jsonify:False }}" {% include "django/forms/widgets/attrs.html" %}>{{ widget.label.title }}</option>

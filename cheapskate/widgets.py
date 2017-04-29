@@ -12,18 +12,4 @@ class JSONSelectMultiple(SelectMultiple):
     Multiple select widget that allows including json
     data inside the option elements.
     """
-
-    def render_option(self, selected_choices, option_value, data):
-        if option_value is None:
-            option_value = ''
-        option_value = force_text(option_value)
-        if option_value in selected_choices:
-            selected_html = mark_safe(' selected="selected"')
-        else:
-            selected_html = ''
-        return format_html('<option value="{}"{} data-json="{}">{}</option>',
-                           option_value,
-                           selected_html,
-                           json.dumps(data),
-                           force_text(data["title"]))
-
+    option_template_name = 'cc-bill-option.html'
