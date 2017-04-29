@@ -76,4 +76,9 @@ gulp.task('dev', function() {
     gulp.watch('cheapskate/**/*.js', ['scripts']);
 });
 
+gulp.task('watch', function() {
+    gulp.watch('cheapskate/**/*.scss', ['sass']);
+    gulp.watch('cheapskate/**/*.js', ['scripts']);
+});
+
 gulp.task("default", ["sass", "scripts"]);
