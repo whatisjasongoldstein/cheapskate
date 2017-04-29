@@ -84,7 +84,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 def show_toolbar(request):
-    return DEBUG
+    return ("debug_toolbar" in request.GET) and DEBUG
 
 DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
