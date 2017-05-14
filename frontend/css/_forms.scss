@@ -1,6 +1,11 @@
 $break-stacked: 480px;
 $label-width: 115px;
 
+input, select, button {
+    font-size: 1em;
+    line-height: normal;
+}
+
 .button, 
 button {
     display: inline-block;
@@ -71,4 +76,8 @@ input:not([type=file]), textarea, select {
     border: 1px solid #ccc;
     background: #f5f5f5;
     box-sizing: border-box;
+}
+
+input[type=checkbox] {
+    width: auto;
 }

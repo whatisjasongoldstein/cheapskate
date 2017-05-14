@@ -1,17 +1,14 @@
-
-var Helpers = {};
-
-/**
- * Get all the parents between the target
- * and the event listener. Can be filtered by
- * a DOM query.
- * This is a way to target elements inside an
- * `a`.
- */
-Helpers.getEventPath = function(e, matching) {
-    var path = [];
-    var el = e.target;
-    var include;
+// 
+// Get all the parents between the target
+// and the event listener. Can be filtered by
+// a DOM query.
+// This is a way to target elements inside an
+// `a`.
+// 
+export function getEventPath(e, matching) {
+    let path = [];
+    let el = e.target;
+    let include;
     while (el && el !== e.currentTarget) {
         include = (!matching || el.matches(matching)) ? true : false;
         if (include) {
@@ -23,9 +20,9 @@ Helpers.getEventPath = function(e, matching) {
 };
 
 
-Helpers.closest = function(el, pattern) {
-    var match = el.matches(pattern);
-    var result = null;
+export function closest (el, pattern) {
+    let match = el.matches(pattern);
+    let result = null;
     while (!match) {
         el = el.parentElement;
         match = el === null || el.matches(pattern); // Null means we're out of parents
@@ -36,4 +33,3 @@ Helpers.closest = function(el, pattern) {
     return el;
 };
 
-module.exports = Helpers;
