@@ -109,4 +109,4 @@ gulp.task('watch', function() {
   gulp.watch('frontend/**/*.js', ['js']);
 });
 
-gulp.task("default", ["css", "js"]);
+gulp.task("default", ["css", "js", "img"]);
