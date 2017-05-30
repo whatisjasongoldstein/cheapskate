@@ -29,6 +29,10 @@ var onError = function(err) {
 };
 
 
+gulp.task('img', function(){
+  return gulp.src('frontend/img/*').pipe(gulp.dest('dist/img'));
+});
+
 gulp.task('css', function() {
   return gulp.src('frontend/**/*.scss')
     .pipe(plumber({
