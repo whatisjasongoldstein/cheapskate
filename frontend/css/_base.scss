@@ -39,18 +39,30 @@ table {
     margin: 0;
     padding: 0;
     font-size: 0.75rem;
+    display: flex;
+    line-height: 1;
 
     li {
-        display: inline-block;
+        display: flex;
         text-align: center;
         box-sizing: border-box;
-        width: calc(100% * (1/7) + 5px);
+        width: 100% * (1/6);
         font-weight: bold;
         border-right: 1px solid #ccc;
-        padding: 0.5rem 0;
+        padding: 0.5rem 0 0.75rem 0;
+        justify-content: center;
         &:last-child {
             border-right: 0;
         }
+    }
+
+    svg {
+        width: auto;
+        height: 1.25em;
+        display: inline;
+        position: relative;
+        top: 0.25em;
+        margin-right: 0.25em;
     }
 
     a {
@@ -64,13 +76,33 @@ table {
             display: block;
             font-size: 0.5rem;
         }
+        svg {
+            top: 0;
+            margin: 0;
+            height: 1em;
+        }
     }
 }
 
 // Colors
-.warning, .warn {color: goldenrod}
-.danger, .error {color: maroon;}
-.good, .success {color: darkgreen;}
+.warning, .warn {
+    color: goldenrod;
+    &::before {
+        background: goldenrod;
+    }
+}
+.danger, .error {
+    color: maroon;
+    &::before {
+        background: maroon;
+    }
+}
+.good, .success {
+    color: darkgreen;
+    &::before {
+        background: darkgreen;
+    }
+}
 
 
 h2.page-title {
@@ -87,8 +119,6 @@ h2.page-title {
     padding: .5em 1em .25em 1em;
 }
 
-$warning-triange-glypth: "\f071";
-$check-square-glyph: "\f14a";
 
 .messages {
     list-style-type: none;
@@ -98,15 +128,18 @@ $check-square-glyph: "\f14a";
     text-align: center;
     margin: 0 auto;
 
-    li:before {
-        font-family: "FontAwesome";
+    li::before {
         margin-right: 0.5em;
+        color: #fff;
+        border-radius: 1em;
+        width: 1.5em;
+        display: inline-block;
     }
 
-    li.error:before {
-        content: $warning-triange-glypth;
+    li.error::before {
+        content: "✘";
     }
-    li.success:before {
-        content: $check-square-glyph;
+    li.success::before {
+        content: "✔";
     }
 }

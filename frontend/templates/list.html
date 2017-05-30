@@ -9,7 +9,7 @@
         {% endif %}
         <form class="inline-form" action="." method="GET">
         <input type="text" name="search" placeholder="Search" {% if search_term %}value="{{ search_term }}"{% endif %} />
-        <button><i class="fa fa-search"></i></button>
+        <button>{% include "icons/search.svg" %}</button>
 
         {% if filter_by %}
         {% include "filters.html" %}

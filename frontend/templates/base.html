@@ -10,7 +10,6 @@
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width" user-scaleable="no">
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,600' rel='stylesheet' type='text/css'>
 
         <link rel="shortcut icon" href="{% static "img/icon.png" %}">
@@ -20,10 +19,6 @@
         
     </head>
     <body>
-        <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
         <header class="site-header">
             <h1>Cheapskate</h1>
         </header>
@@ -42,16 +37,49 @@
         {% block content %}{% endblock content %}        
 
         <ul class="site-nav">
-            <li><a href="{% url "index" %}"><i class="fa fa-bar-chart"></i><span class="label"> Overview</span></a></li>
-            <li><a href="{% url "charge_list" %}"><i class="fa fa-credit-card"></i> <span class="label">Charges</span></a></li>
-            <li><a href="{% url "withdrawal_list" %}"><i class="fa fa-arrow-circle-o-up"></i> <span class="label">Withdrawals</span></a></li>
-            <li><a href="{% url "deposit_list" %}"><i class="fa fa-arrow-circle-o-down"></i> <span class="label">Deposits</span></a></li>
-            <li><a href="{% url "ccbill_list" %}"><i class="fa fa-envelope-o"></i> <span class="label">CC Bills</a></li>
-            <li><a href="{% url "admin:index" %}"><i class="fa fa-cog"></i> <span class="label">Admin</span></a></li>
+            <li>
+                <a href="{% url "index" %}">
+                    {% include "icons/bar-chart.svg" %}
+                    <span class="label"> Overview</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url "charge_list" %}">
+                    {% include "icons/credit-card.svg" %}
+                    <span class="label">Charges</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url "withdrawal_list" %}">
+                    {% include "icons/arrow-circle-o-up.svg" %}
+                    <span class="label">Withdrawals</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url "deposit_list" %}">
+                    {% include "icons/arrow-circle-o-down.svg" %}
+                    <span class="label">Deposits</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url "ccbill_list" %}">
+                    {% include "icons/envelope-o.svg" %}
+                    <span class="label">CC Bills</a>
+            </li>
+            <li>
+                <a href="{% url "admin:index" %}">
+                    {% include "icons/cog.svg" %}
+                    <span class="label">Admin</span>
+                </a>
+            </li>
         </ul>
 
         {% block scripts %}
-        <script type="text/javascript" src="{% static "js/app.js" %}" async></script>
+            {% if debug %}
+                <script type="text/javascript" src="{% static "js/app.js" %}"></script>
+            {% else %}
+                <script type="text/javascript" src="{% static "js/app.min.js" %}"></script>
+            {% endif %}
         {% endblock scripts %}
 
     </body>

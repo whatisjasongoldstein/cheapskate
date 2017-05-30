@@ -86,4 +86,11 @@ $break-stack-rows: 550px;
             display: none;
         }
     }
+
+    svg {
+        width: 1em;
+        height: auto;
+        position: relative;
+        top: .1em;
+    }
 }

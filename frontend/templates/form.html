@@ -9,8 +9,8 @@
     {% endspaceless %}
 
     <button name="save" value="1">Save</button>
-    <button name="save_and_create" value="1"><i class="fa fa-plus-square"></i></button>
-    <button name="delete" value="1" data-widget="confirm-button" data-confirm-message="Are you sure you want to delete {{ form.instance.title }}?">Delete  <i class="fa fa-trash"></i></button>
+    <button name="save_and_create" value="1">{% include "icons/plus-square.svg" %}</button>
+    <button name="delete" value="1" data-widget="confirm-button" data-confirm-message="Are you sure you want to delete {{ form.instance.title }}?">Delete  {% include "icons/trash.svg" %}</button>
     <a class="button" href="../">Back</a>
 </form>
 {% endblock content %}
