@@ -26,6 +26,7 @@ table {
     }
 }
 
+
 .site-nav {
     position: fixed;
     bottom: 0;
@@ -39,35 +40,33 @@ table {
     margin: 0;
     padding: 0;
     font-size: 0.75rem;
-    display: flex;
-    line-height: 1;
 
     li {
-        display: flex;
+        display: inline-block;
         text-align: center;
         box-sizing: border-box;
-        width: 100% * (1/6);
+        width: calc(100% * (1/7) + 5px);
         font-weight: bold;
         border-right: 1px solid #ccc;
-        padding: 0.5rem 0 0.75rem 0;
-        justify-content: center;
+        padding: 0.5rem 0;
         &:last-child {
             border-right: 0;
         }
     }
 
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
     svg {
         width: auto;
         height: 1.25em;
+        width: 1.25em;
         display: inline;
         position: relative;
         top: 0.25em;
         margin-right: 0.25em;
-    }
-
-    a {
-        color: black;
-        text-decoration: none;
     }
 
     @media (max-width: 720px) {
@@ -80,9 +79,60 @@ table {
             top: 0;
             margin: 0;
             height: 1em;
+            width: 1em;
         }
     }
 }
+
+
+// .site-nav {
+//     position: fixed;
+//     bottom: 0;
+//     left: 0;
+//     width: 100%;
+//     list-style-type: none;
+//     text-align: center;
+//     background: #f5f5f5;
+//     border-top: 1px solid #ccc;
+//     overflow: hidden;
+//     margin: 0;
+//     padding: 0;
+//     font-size: 0.75rem;
+//     display: flex;
+//     line-height: 1;
+
+//     li {
+//         display: flex;
+//         text-align: center;
+//         box-sizing: border-box;
+//         width: 100% * (1/6);
+//         font-weight: bold;
+//         border-right: 1px solid #ccc;
+//         padding: 0.5rem 0 0.75rem 0;
+//         justify-content: center;
+//         position: relative;
+//         overflow: hidden;
+//         &:last-child {
+//             border-right: 0;
+//         }
+//     }
+
+//     a {
+//         color: black;
+//         text-decoration: none;
+//         display: block;
+//         width: auto;
+//     }
+
+//     @media (max-width: 720px) {
+//         font-weight: 100;
+//         .label {
+//             display: block;
+//             font-size: 0.5rem;
+//         }
+
+//     }
+// }
 
 // Colors
 .warning, .warn {
