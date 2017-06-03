@@ -23,11 +23,13 @@ DATABASES = {
     }
 }
 
+
 ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "cheapskate.bs",
     "cheapskate.scruffylogic.com",
 ]
+
+if DEBUG:
+    ALLOWED_HOSTS.append("*")
 
 INTERNAL_IPS = [
     "127.0.0.1",
