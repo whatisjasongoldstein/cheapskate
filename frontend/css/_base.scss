@@ -88,26 +88,14 @@ table {
 // Colors
 .warning, .warn {
     color: goldenrod;
-    &::before {
-        background: goldenrod;
-        color: white;
-    }
 }
 .danger, .error {
     color: maroon;
-    &::before {
-        background: maroon;
-        color: white;
-    }
-}
-.good, .success {
-    color: darkgreen;
-    &::before {
-        background: darkgreen;
-        color: white;
-    }
 }
 
+.good, .success {
+    color: darkgreen;
+}
 
 h2.page-title {
     margin: 0 0 1rem 0;
@@ -131,19 +119,4 @@ h2.page-title {
     max-width: 300px;
     text-align: center;
     margin: 0 auto;
-
-    li::before {
-        margin-right: 0.5em;
-        color: #fff;
-        border-radius: 1em;
-        width: 1.5em;
-        display: inline-block;
-    }
-
-    li.error::before {
-        content: "✘";
-    }
-    li.success::before {
-        content: "✔";
-    }
 }
