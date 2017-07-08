@@ -119,4 +119,15 @@ h2.page-title {
     max-width: 300px;
     text-align: center;
     margin: 0 auto;
+
+    li {
+        display: inline-block;
+        color: white;
+        padding: 0.2em 1em;
+        border-radius: 4px;
+
+        &.success { background: darkgreen; }
+        &.error { background: maroon; }
+        &.warn { background: goldenrod; }
+    }
 }
