@@ -1,3 +1,5 @@
+import {closest} from './helpers';
+
 // Link selectors
 document.addEventListener("change", function(e) {
   if (e.target.getAttribute("data-widget") === "url-selector") {
@@ -15,8 +17,13 @@ document.addEventListener("change", function(e) {
   }
 });
 
+
 document.addEventListener("click", function(e) {
-  if (e.target.getAttribute("data-widget") === "confirm-button") {
+
+  // Capture children of confirm buttons, like icons, too.
+  let isWidget = !!closest(e.target, "[data-widget='confirm-button']");
+  
+  if (isWidget) {
     let message = e.target.getAttribute("data-confirm-message") || "Are you sure?";
     if (window.confirm(message)) {
       return;
@@ -26,6 +33,7 @@ document.addEventListener("click", function(e) {
     }
   }
 });
+
 
 // Toggles elements that match a selector
 document.addEventListener("click", function(e) {
