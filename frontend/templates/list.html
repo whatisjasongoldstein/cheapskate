@@ -27,12 +27,12 @@
     <div class="pagination">
         Page {{ page.number }} of {{ page.paginator.num_pages }}
 
-        {% if previous_page_url %}
-        <a class="button" href="{{ previous_page_url }}">Previous</a>
+        {% if pagination_urls.previous %}
+        <a class="button" href="{{ pagination_urls.previous }}">Previous</a>
         {% endif %}
 
-        {% if next_page_url %}
-        <a class="button" href="{{ next_page_url }}">Next</a>
+        {% if pagination_urls.next %}
+        <a class="button" href="{{ pagination_urls.next }}">Next</a>
         {% endif %}
     </div>
 </div>
