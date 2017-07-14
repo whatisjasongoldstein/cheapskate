@@ -1,4 +1,5 @@
 Django==1.11
+psycopg2==2.7.1
 Fabric==1.10.2
 python-memcached==1.57
 libsass==0.8.3
