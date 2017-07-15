@@ -134,8 +134,9 @@ class CCBill(models.Model):
         return (self.charges.filter(paid=False).count() == 0)
 
     def total_charges(self):
-        total = round(sum(self.charges.all().values_list('amount', flat=True)), 2)
-        return total
+        total = (self.charges.all()
+                     .aggregate(models.Sum("amount"))["amount__sum"] or 0)
+        return round(total, 2)
 
     def balances(self):
         total = self.total_charges()
@@ -165,9 +166,6 @@ class Deposit(models.Model):
     account = models.ForeignKey(Account, limit_choices_to={'kind':'checking'})
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
     do_not_project = models.BooleanField("One-off Event", default=False)
-
-    def balance(self):
-        return calc_balance(self.date, self.account.title)
 
     def __str__(self):
         return self.title

@@ -238,7 +238,86 @@ class CCBillTests(TestCase):
 
 
 class DepositTests(TestCase):
-    pass
+    def setUp(self):
+        self.account, _ = Account.objects.get_or_create(title="Acc", kind="checking")
+        self.category, _ = IncomeCategory.objects.get_or_create(title="Things")
+        self.deposit = Deposit.objects.create(
+            title="Paycheck",
+            amount=10,  # ouch!
+            category=self.category,
+            account=self.account,
+        )
+
+    def test_get_absolute_url(self):
+        expected = "/deposits/%s/" % self.deposit.id
+        url = self.deposit.get_absolute_url()
+        self.assertEqual(url, expected)
+
+    def test_get_create_url(self):
+        expected = "/deposits/add/"
+        url = Deposit.get_create_url()
+        self.assertEqual(url, expected)
+
+    def test_search_by_title(self):
+        result = Deposit.search("pay")
+        self.assertEqual(result[0], self.deposit)
+
+    def test_search_by_amount(self):
+        # As a string
+        result = Deposit.search("10")
+        self.assertEqual(result[0], self.deposit)
+
+        # As an int
+        result = Deposit.search(10)
+        self.assertEqual(result[0], self.deposit)
+
+        # As a decimal
+        result = Deposit.search("10.00")
+        self.assertEqual(result[0], self.deposit)
+
+    def test_search_miss(self):
+        result = Deposit.search("Nothing")
+        self.assertEqual(len(result), 0)
+
 
 class WithdrawalTests(TestCase):
-    pass
+    def setUp(self):
+        self.account, _ = Account.objects.get_or_create(title="Acc", kind="checking")
+        self.category, _ = ExpenseCategory.objects.get_or_create(title="Things")
+        self.rent = Withdrawal.objects.create(
+            title="Rent",
+            amount=200,  # Wishful thinking
+            category=self.category,
+            account=self.account,
+        )
+
+    def test_get_absolute_url(self):
+        expected = "/withdrawals/%s/" % self.rent.id
+        url = self.rent.get_absolute_url()
+        self.assertEqual(url, expected)
+
+    def test_get_create_url(self):
+        expected = "/withdrawals/add/"
+        url = Withdrawal.get_create_url()
+        self.assertEqual(url, expected)
+
+    def test_search_by_title(self):
+        result = Withdrawal.search("rent")
+        self.assertEqual(result[0], self.rent)
+
+    def test_search_by_amount(self):
+        # As a string
+        result = Withdrawal.search("200")
+        self.assertEqual(result[0], self.rent)
+
+        # As an int
+        result = Withdrawal.search(200)
+        self.assertEqual(result[0], self.rent)
+
+        # As a decimal
+        result = Withdrawal.search("200.00")
+        self.assertEqual(result[0], self.rent)
+
+    def test_search_miss(self):
+        result = Withdrawal.search("Nothing")
+        self.assertEqual(len(result), 0)
