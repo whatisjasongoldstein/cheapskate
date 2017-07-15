@@ -2,7 +2,7 @@ import datetime
 from django.test import TestCase
 
 from ..models import (Account, Charge, Withdrawal, Deposit,
-    IncomeCategory, ExpenseCategory)
+    IncomeCategory, ExpenseCategory, CCBill)
 
 class ExpenseCategoryTests(TestCase):
 
@@ -162,20 +162,79 @@ class ChargeTests(TestCase):
 
 
 class CCBillTests(TestCase):
-    def is_paid(self):
-        pass
+
+    def setUp(self):
+        self.account, _ = Account.objects.get_or_create(title="CC", kind="cc")
+        self.category, _ = ExpenseCategory.objects.get_or_create(title="Things")
+        
+        self.bill = CCBill.objects.create(
+            amount=500,
+            account=self.account,
+        )
+
+        self.charge1 = Charge.objects.create(
+            title="Charge1",
+            amount=100,
+            account=self.account,
+            category=self.category,
+        )
+
+        self.charge2 = Charge.objects.create(
+            title="Charge2",
+            amount=200,
+            account=self.account,
+            category=self.category,
+        )
+
+        self.charge3 = Charge.objects.create(
+            title="Charge3",
+            amount=300,
+            account=self.account,
+            category=self.category,
+        )
+
+    def test_is_paid_when_false(self):
+        self.bill.charges.add(self.charge1)
+        self.assertFalse(self.bill.is_paid)
+
+    def test_is_paid_when_true(self):
+        self.charge1.paid = True
+        self.charge1.save()
+        self.bill.charges.add(self.charge1)
+        self.assertTrue(self.bill.is_paid)
     
-    def total_charges(self):
-        pass
+    def test_total_charges_empty(self):
+        self.assertEqual(self.bill.total_charges(), 0)
+
+    def test_total_charges_filled(self):
+        self.bill.charges.add(self.charge1)
+        self.assertEqual(self.bill.total_charges(), 100)
     
-    def balances(self):
-        pass
+    def test_balances_exact(self):
+        self.bill.charges.add(self.charge2)
+        self.bill.charges.add(self.charge3)
+        self.assertEqual(self.bill.balances(), "Exact")
+        
+    def test_balances_over(self):
+        self.bill.charges.add(self.charge1)
+        self.bill.charges.add(self.charge2)
+        self.bill.charges.add(self.charge3)
+        self.assertEqual(self.bill.balances(), "$100.00 over")
+
+    def test_balances_over(self):
+        self.bill.charges.add(self.charge1)
+        self.bill.charges.add(self.charge3)
+        self.assertEqual(self.bill.balances(), "$100.00 short")
     
-    def get_create_url(self):
-        pass
+    def test_get_create_url(self):
+        url = CCBill.get_create_url()
+        expected = "/credit-card-bills/add/"
+        self.assertEqual(url, expected)
     
-    def get_absolute_url(self):
-        pass
+    def test_get_absolute_url(self):
+        expected = "/credit-card-bills/%s/" % self.bill.id
+        url = self.bill.get_absolute_url()
+        self.assertEqual(url, expected)
 
 
 class DepositTests(TestCase):
