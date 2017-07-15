@@ -32,15 +32,30 @@ class ExpenseCategory(models.Model):
         verbose_name_plural = "Expense Categories"
 
     def total(self, month=datetime.date.today().month, year=datetime.date.today().year):
-        """ Returns the total expenses for the category in a given month. """
-        result = sum(
-                Charge.objects.filter(category__id=self.id, 
-                    date__year=year, date__month=month).values_list('amount', flat=True)
-            ) + sum(
-                Withdrawal.objects.filter(category__id=self.id, 
-                    date__year=year, date__month=month).values_list('amount', flat=True)
+        """
+        Returns the total expenses for the category in a given month.
+        """
+        total_charges = (Charge.objects.filter(
+                    category_id=self.id, 
+                    date__year=year,
+                    date__month=month,
+                    ).aggregate(models.Sum("amount"))["amount__sum"] or 0)
+
+        qs = Charge.objects.filter(
+            category_id=self.id, 
+            date__year=year,
+            date__month=month,
+        )
+        total_charges = (qs.aggregate(models.Sum("amount"))["amount__sum"] or 0)
+
+        qs = Withdrawal.objects.filter(
+                category_id=self.id, 
+                date__year=year,
+                date__month=month,
             )
-        return result
+        total_withdraws = (qs.aggregate(models.Sum("amount"))["amount__sum"] or 0)
+
+        return total_charges + total_withdraws
 
 
 class IncomeCategory(models.Model):
@@ -50,12 +65,12 @@ class IncomeCategory(models.Model):
         return self.title
 
     def total(self, month=datetime.date.today().month, year=datetime.date.today().year):
-        """ Returns the totali income for the category in a given month."""
-        return sum(Deposit.objects.filter(
-                    category_id=self.id, 
-                    date__year=year, 
-                    date__month=month
-                    ).values_list('amount', flat=True))
+        data = Deposit.objects.filter(
+            category_id=self.id, 
+            date__year=year,
+            date__month=month,
+        ).aggregate(models.Sum("amount"))
+        return (data["amount__sum"] or 0)
 
 
 class Charge(models.Model):
@@ -138,18 +153,6 @@ class CCBill(models.Model):
 
     def get_absolute_url(self):
         return reverse("edit_ccbill", kwargs={"id": self.id})
-
-
-def calc_balance(date, account):
-    account = Account.objects.get(title=account)
-    ws = Withdrawal.objects.filter(date__lte=date, account=account)
-    ds = Deposit.objects.filter(date__lte=date, account=account)
-    bal = 0
-    for w in ws:
-        bal = bal - w.amount
-    for d in ds:
-        bal = bal + d.amount
-    return bal
 
 
 class Deposit(models.Model):

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from cheapskate.models import ExpenseCategory, IncomeCategory, Charge, CCBill, Deposit, Withdrawal, Account
+from .models import (ExpenseCategory, IncomeCategory, 
+	Charge, CCBill, Deposit, Withdrawal, Account)
 
 def pay_bill(modeladmin, request, queryset):
 	for q in queryset:

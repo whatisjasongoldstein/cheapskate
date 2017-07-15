@@ -7,10 +7,10 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from django.conf import settings
 
-from cheapskate.views import dashboard_views
-from cheapskate.views import list_views
-from cheapskate.views import form_views
-from cheapskate.views import legacy_views
+from .views import dashboard_views
+from .views import list_views
+from .views import form_views
+from .views import legacy_views
 
 
 admin.autodiscover()
