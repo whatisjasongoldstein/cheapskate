@@ -5,4 +5,3 @@ python-memcached==1.57
 libsass==0.8.3
 raven==5.8.1
 django-debug-toolbar==1.6
-mock==2.0.0
