@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+from functools import lru_cache
+
 import calendar
 import datetime
 
@@ -31,7 +33,7 @@ class Month(object):
         self.name = calendar.month_name[self.index]
         _expense_categories = expense_categories or []
         _income_categories = income_categories or []
-        
+
         self.totals = {
             "expenses": sum_expense(date__year=self.year, date__month=self.index),
             "income": sum_income(date__year=self.year, date__month=self.index),
@@ -54,6 +56,7 @@ class Month(object):
                 "title": category.title,
                 "total": category.total(month=self.index, year=self.year)
             })
+
 
 PAST = "past"
 ONE_OFF = "one_off"
