@@ -2,14 +2,14 @@ from urllib import parse as urlparse
 
 
 def add_url_parameter(url, key, value):
-    # import debug
     parts = url.split("?")
     base_url = parts[0]
     query = ""
     if len(parts) > 1:
         query = parts[1]
 
-    pairs = [pair.split("=") for pair in query.split("&")]
+    pairs = [pair.split("=") for pair in query.split("&") if pair]
+    
     querydict = {}
     for pair in pairs:
         pair.append(None)
