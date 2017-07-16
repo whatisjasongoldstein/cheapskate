@@ -279,6 +279,59 @@ class ActiveDashboardTests(TestCase):
     """
     
     def setUp(self):
+        self.exp_category, _ = ExpenseCategory.objects.get_or_create(title="Foo")
+        self.inc_category, _ = IncomeCategory.objects.get_or_create(title="Bar")
+
+        self.cc, _ = Account.objects.get_or_create(title="CC", kind="cc")
+        self.bank, _ = Account.objects.get_or_create(title="CC", kind="checking")
+
+        # Make some charges
+        for i in range(1, 7):
+            Charge.objects.create(
+                title="Monthly charge",
+                amount=100,
+                date=datetime.date(2017, i, 1),
+                category=self.exp_category,
+                account=self.cc,
+            )
+
+        # Make some income
+        for i in range(1, 7):
+            Deposit.objects.create(
+                title="Monthly income",
+                amount=500,
+                date=datetime.date(2017, i, 1),
+                category=self.inc_category,
+                account=self.bank,
+            )
+
+        # And some odd cases
+        Withdrawal.objects.create(
+            title="Beware the ides of march",
+            amount=600,
+            date=datetime.date(2017, 3, 15),
+            category=self.exp_category,
+            account=self.bank,
+        )
+
+        # Make some one offs
+        Charge.objects.create(
+            title="Chicago Trip",
+            amount=500,
+            date=datetime.date(2017, 4, 1),
+            category=self.exp_category,
+            account=self.cc,
+            do_not_project=True,
+        )
+
+        Deposit.objects.create(
+            title="Freelance project",
+            amount=2000,
+            date=datetime.date(2017, 5, 15),
+            account=self.bank,
+            category=self.inc_category,
+            do_not_project=True,
+        )
 
         class TestDashboard(Dashboard):
             """
@@ -287,14 +340,6 @@ class ActiveDashboardTests(TestCase):
             date = datetime.date(2017, 7, 1)
 
         self.dash = TestDashboard(year=2017)
-    
-    def test_dashboard_contains_list_of_months(self):
-        pass
-        # months = self.dash.months
-        # for month in months:
-        #     self.assertIsInstance(month, Month)
-        # self.assertEqual(months[0].name, "January") 
-        # self.assertEqual(months[11].name, "December") 
 
     def test_assumes_current_year(self):
         dash = Dashboard()
@@ -306,26 +351,39 @@ class ActiveDashboardTests(TestCase):
         self.assertEqual(self.dash.past_months[0].name, "January")
     
     def test_ytd(self):
-        pass
-        # TODO. Requires mocking date.
+        expected = {
+            'income': 5000.0,
+            'expenses': 1700.0, 
+            'net': 3300.0,
+            'percent': 66,
+        }
+        self.assertEqual(self.dash.ytd, expected)
     
     def test_filters(self):
-        pass
+        past_month_filter = self.dash.filters["past"]["date__month__in"]
+        expected = [1, 2, 3, 4, 5, 6]
+        self.assertEqual(past_month_filter, expected)
 
     def test_average_monthly_income(self):
-        pass
+        self.assertEqual(self.dash.average_monthly_income, 500.0)
 
     def test_average_monthly_expenses(self):
-        pass
+        self.assertEqual(self.dash.average_monthly_expenses, 200.0)
 
     def test_one_off_income(self):
-        pass
+        self.assertEqual(self.dash.one_off_income, 2000.0)
 
     def test_one_off_expenses(self):
-        pass
+        self.assertEqual(self.dash.one_off_expenses, 500.0)
 
     def test_projected(self):
-        pass
+        expected = {
+            'income': 8000.0,
+            'expenses': 2900.0,
+            'net': 5100.0,
+            'percent': 64,
+        }
+        self.assertEqual(self.dash.projected, expected)
 
 
 class PastDashboardTests(TestCase):
@@ -333,8 +391,61 @@ class PastDashboardTests(TestCase):
     A dashboard from a previous year
     that's already full.
     """
-    
     def setUp(self):
+        self.exp_category, _ = ExpenseCategory.objects.get_or_create(title="Foo")
+        self.inc_category, _ = IncomeCategory.objects.get_or_create(title="Bar")
+
+        self.cc, _ = Account.objects.get_or_create(title="CC", kind="cc")
+        self.bank, _ = Account.objects.get_or_create(title="CC", kind="checking")
+
+        # Make some charges
+        for i in range(1, 13):
+            Charge.objects.create(
+                title="Monthly charge",
+                amount=100,
+                date=datetime.date(2010, i, 1),
+                category=self.exp_category,
+                account=self.cc,
+            )
+
+        # Make some income
+        for i in range(1, 13):
+            Deposit.objects.create(
+                title="Monthly income",
+                amount=500,
+                date=datetime.date(2010, i, 1),
+                category=self.inc_category,
+                account=self.bank,
+            )
+
+        # And some odd cases
+        Withdrawal.objects.create(
+            title="Beware the ides of march",
+            amount=600,
+            date=datetime.date(2010, 3, 15),
+            category=self.exp_category,
+            account=self.bank,
+        )
+
+        # Make some one offs
+        Charge.objects.create(
+            title="Chicago Trip",
+            amount=500,
+            date=datetime.date(2010, 4, 1),
+            category=self.exp_category,
+            account=self.cc,
+            do_not_project=True,
+        )
+
+        Deposit.objects.create(
+            title="Freelance project",
+            amount=2000,
+            date=datetime.date(2010, 5, 15),
+            account=self.bank,
+            category=self.inc_category,
+            do_not_project=True,
+        )
+
         self.dash = Dashboard(year=2010)
 
     def test_past_months(self):
@@ -343,24 +454,34 @@ class PastDashboardTests(TestCase):
         self.assertEqual(self.dash.past_months[0].name, "January")
     
     def test_ytd(self):
-        pass
-        # TODO. Requires mocking date.
-    
-    def test_filters(self):
-        pass
-
-    def test_average_monthly_income(self):
-        pass
-
-    def test_average_monthly_expenses(self):
-        pass
-
-    def test_one_off_income(self):
-        pass
-
-    def test_one_off_expenses(self):
-        pass
+        expected = {
+            'income': 8000.0,
+            'expenses': 2300.0,
+            'net': 5700.0,
+            'percent': 71
+        }
+        self.assertEqual(self.dash.ytd, expected)
 
     def test_projected(self):
-        pass
+        """
+        Projected and YTD should be
+        the same in past years.
+        """
+        self.assertEqual(self.dash.ytd, self.dash.projected)
 
+    def test_filters(self):
+        past_month_filter = self.dash.filters["past"]["date__month__in"]
+        expected = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        self.assertEqual(past_month_filter, expected)
+
+    def test_average_monthly_income(self):
+        self.assertEqual(self.dash.average_monthly_income, 500.0)
+
+    def test_average_monthly_expenses(self):
+        self.assertEqual(self.dash.average_monthly_expenses, 150)
+
+    def test_one_off_income(self):
+        self.assertEqual(self.dash.one_off_income, 2000)
+
+    def test_one_off_expenses(self):
+        self.assertEqual(self.dash.one_off_expenses, 500)
