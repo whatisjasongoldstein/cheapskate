@@ -55,6 +55,9 @@ class Month(object):
                 "total": category.total(month=self.index, year=self.year)
             })
 
+PAST = "past"
+ONE_OFF = "one_off"
+
 
 class Dashboard(object):
 
@@ -97,78 +100,74 @@ class Dashboard(object):
             data["percent"] = int(round((data["net"] / data["income"]) * 100))
         return data
 
-    @cached_property
-    def total_recurring_amounts(self):
-        # Use common events from past months to predict
-        # future months.
-        kwargs = {
-            "date__year": self.year,
-            "date__month__in": [m.index for m in self.past_months],
-            "do_not_project": False,
-            "category__isnull": False, 
-        }
-
-        # All common events
-        charges = Charge.objects.filter(**kwargs
-            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
-        withdrawals = Withdrawal.objects.filter(**kwargs
-            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
-        expenses = charges + withdrawals;
-
-        income = Deposit.objects.filter(**kwargs
-            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
-
+    @property
+    def filters(self):
+        """
+        Params for filtering all records.
+        """
         return {
-            "income": income,
-            "expenses": expenses,
+            PAST: {
+                "date__year": self.year,
+                "date__month__in": [m.index for m in self.past_months],
+                "do_not_project": False,
+                "category__isnull": False, 
+            },
+            ONE_OFF: {
+                "date__year": self.year,
+                "do_not_project": True,
+                "category__isnull": False, 
+            }
         }
 
     @cached_property
-    def total_one_off_amounts(self):
-        # Some entries, such as trips or big purchases, aren't
-        # good predictors of future months.
-
-        # One-off events
-        kwargs = {
-            "date__year": self.year,
-            "do_not_project": True,
-            "category__isnull": False, 
-        }
-        charges = Charge.objects.filter(**kwargs
+    def average_monthly_income(self):
+        """
+        Excluding one off events.
+        """
+        income = Deposit.objects.filter(**self.filters[PAST]
             ).aggregate(models.Sum("amount"))["amount__sum"] or 0
-        withdrawals = Withdrawal.objects.filter(**kwargs
+        return (income / len(self.past_months))
+
+    @cached_property
+    def average_monthly_expenses(self):
+        """
+        Excluding one off events.
+        """
+        charges = Charge.objects.filter(**self.filters[PAST]
+            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
+        withdrawals = Withdrawal.objects.filter(**self.filters[PAST]
+            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
+        return ((charges + withdrawals) / len(self.past_months))
+
+    @cached_property
+    def one_off_income(self):
+        return Deposit.objects.filter(**self.filters[ONE_OFF]
             ).aggregate(models.Sum("amount"))["amount__sum"] or 0
 
-        expenses = charges + withdrawals
-        income = Deposit.objects.filter(**kwargs
+    @cached_property
+    def one_off_expenses(self):
+        charges = Charge.objects.filter(**self.filters[ONE_OFF]
             ).aggregate(models.Sum("amount"))["amount__sum"] or 0
-
-        return {
-            "income": income,
-            "expenses": expenses,
-        }
+        withdrawals = Withdrawal.objects.filter(**self.filters[ONE_OFF]
+            ).aggregate(models.Sum("amount"))["amount__sum"] or 0
+        return (charges + withdrawals)
 
     @cached_property
     def projected(self):
-        num_months = len(self.past_months)
-        
         # Don't make assumptions if no months have elapsed.
-        if not num_months:
+        if not len(self.past_months):
             return {
                 "income": 0,
                 "expenses": 0,
                 "net": 0,
             }
 
-        income = self.total_recurring_amounts["income"]
-        expenses = self.total_recurring_amounts["expenses"]
-        one_off_income = self.total_one_off_amounts["income"]
-        one_off_expenses = self.total_one_off_amounts["expenses"]
-
         # Add the one-offs to the projected totals based
         # on common events.
-        projected_income = (income / num_months * 12) + one_off_income
-        projected_expenses = (expenses / num_months * 12) + one_off_expenses
+        projected_income = ((self.average_monthly_income * 12) + 
+                             self.one_off_income)
+        projected_expenses = ((self.average_monthly_expenses * 12) + 
+                             self.one_off_expenses)
         projected_net = projected_income - projected_expenses
 
         data = {
