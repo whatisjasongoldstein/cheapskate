@@ -219,7 +219,30 @@ class MonthTests(TestCase):
         ])
 
 
-
 class DashboardTests(TestCase):
-    pass
+    
+    def setUp(self):
+        self.empty_dash = Dashboard(year=2018)
+    
+    def test_dashboard_contains_list_of_months(self):
+        months = self.empty_dash.months
+        for month in months:
+            self.assertIsInstance(month, Month)
+        self.assertEqual(months[0].name, "January") 
+        self.assertEqual(months[11].name, "December") 
+
+    def test_assumes_current_year(self):
+        dash = Dashboard()
+        self.assertEqual(dash.year, datetime.date.today().year)
+
+    def test_past_months(self):
+        pass
+        # TODO. Requires mocking date.
+    
+    def test_ytd(self):
+        pass
+        # TODO. Requires mocking date.
+    
+    
+
 
