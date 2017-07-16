@@ -87,7 +87,9 @@ class Dashboard(object):
     def past_months(self):
         if self.year == self.today.year:
             return [m for m in self.months if m.index < self.today.month]
-        return self.months
+        elif self.year < self.today.year:
+            return self.months
+        return []
 
     @cached_property
     def ytd(self):
@@ -126,6 +128,11 @@ class Dashboard(object):
         """
         income = Deposit.objects.filter(**self.filters[PAST]
             ).aggregate(models.Sum("amount"))["amount__sum"] or 0
+
+        # If there are past months
+        # we can't take an average.
+        if not self.past_months:
+            return 0
         return (income / len(self.past_months))
 
     @cached_property
@@ -137,6 +144,11 @@ class Dashboard(object):
             ).aggregate(models.Sum("amount"))["amount__sum"] or 0
         withdrawals = Withdrawal.objects.filter(**self.filters[PAST]
             ).aggregate(models.Sum("amount"))["amount__sum"] or 0
+
+        # If there are past months
+        # we can't take an average.
+        if not self.past_months:
+            return 0
         return ((charges + withdrawals) / len(self.past_months))
 
     @cached_property

@@ -1,4 +1,3 @@
-import mock
 import datetime
 from django.test import TestCase
 
@@ -224,8 +223,16 @@ class EmptyDashboardTests(TestCase):
     """
     Future dashboards have nothing in them.
     """
+
     def setUp(self):
-        self.dash = Dashboard(year=2018)
+
+        class TestDashboard(Dashboard):
+            """
+            Force date for testing.
+            """
+            date = datetime.date(2017, 1, 1)
+
+        self.dash = TestDashboard(year=2018)
     
     def test_dashboard_contains_list_of_months(self):
         months = self.dash.months
@@ -239,29 +246,30 @@ class EmptyDashboardTests(TestCase):
         self.assertEqual(dash.year, datetime.date.today().year)
 
     def test_past_months(self):
-        pass
-        # TODO. Requires mocking date.
+        """
+        There are no past months in the future.
+        """
+        self.assertEqual(self.dash.past_months, [])
     
     def test_ytd(self):
-        pass
-    
-    def test_filters(self):
-        pass
+        expected = {'income': 0, 'expenses': 0, 'net': 0}
+        self.assertEqual(self.dash.ytd, expected)
 
     def test_average_monthly_income(self):
-        pass
+        self.assertEqual(self.dash.average_monthly_income, 0)
 
     def test_average_monthly_expenses(self):
-        pass
+        self.assertEqual(self.dash.average_monthly_income, 0)
 
     def test_one_off_income(self):
-        pass
+        self.assertEqual(self.dash.one_off_income, 0)
 
     def test_one_off_expenses(self):
-        pass
+        self.assertEqual(self.dash.one_off_expenses, 0)
 
     def test_projected(self):
-        pass
+        expected = {'income': 0, 'expenses': 0, 'net': 0}
+        self.assertEqual(self.dash.projected, expected)
 
 
 class ActiveDashboardTests(TestCase):
@@ -271,7 +279,14 @@ class ActiveDashboardTests(TestCase):
     """
     
     def setUp(self):
-        self.dash = Dashboard(year=2017)
+
+        class TestDashboard(Dashboard):
+            """
+            Force date for testing.
+            """
+            date = datetime.date(2017, 7, 1)
+
+        self.dash = TestDashboard(year=2017)
     
     def test_dashboard_contains_list_of_months(self):
         pass
@@ -286,8 +301,9 @@ class ActiveDashboardTests(TestCase):
         self.assertEqual(dash.year, datetime.date.today().year)
 
     def test_past_months(self):
-        pass
-        # TODO. Requires mocking date.
+        self.assertEqual(len(self.dash.past_months), 6)
+        self.assertEqual(self.dash.past_months[-1].name, "June")
+        self.assertEqual(self.dash.past_months[0].name, "January")
     
     def test_ytd(self):
         pass
@@ -322,8 +338,9 @@ class PastDashboardTests(TestCase):
         self.dash = Dashboard(year=2010)
 
     def test_past_months(self):
-        pass
-        # TODO. Requires mocking date.
+        self.assertEqual(len(self.dash.past_months), 12)
+        self.assertEqual(self.dash.past_months[-1].name, "December")
+        self.assertEqual(self.dash.past_months[0].name, "January")
     
     def test_ytd(self):
         pass
@@ -346,6 +363,4 @@ class PastDashboardTests(TestCase):
 
     def test_projected(self):
         pass
-
-
 
