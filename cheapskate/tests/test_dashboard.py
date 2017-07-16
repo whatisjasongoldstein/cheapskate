@@ -1,3 +1,4 @@
+import mock
 import datetime
 from django.test import TestCase
 
@@ -219,13 +220,15 @@ class MonthTests(TestCase):
         ])
 
 
-class DashboardTests(TestCase):
-    
+class EmptyDashboardTests(TestCase):
+    """
+    Future dashboards have nothing in them.
+    """
     def setUp(self):
-        self.empty_dash = Dashboard(year=2018)
+        self.dash = Dashboard(year=2018)
     
     def test_dashboard_contains_list_of_months(self):
-        months = self.empty_dash.months
+        months = self.dash.months
         for month in months:
             self.assertIsInstance(month, Month)
         self.assertEqual(months[0].name, "January") 
@@ -241,8 +244,108 @@ class DashboardTests(TestCase):
     
     def test_ytd(self):
         pass
+    
+    def test_filters(self):
+        pass
+
+    def test_average_monthly_income(self):
+        pass
+
+    def test_average_monthly_expenses(self):
+        pass
+
+    def test_one_off_income(self):
+        pass
+
+    def test_one_off_expenses(self):
+        pass
+
+    def test_projected(self):
+        pass
+
+
+class ActiveDashboardTests(TestCase):
+    """
+    A dashboard for the current
+    year with active projects.
+    """
+    
+    def setUp(self):
+        self.dash = Dashboard(year=2017)
+    
+    def test_dashboard_contains_list_of_months(self):
+        pass
+        # months = self.dash.months
+        # for month in months:
+        #     self.assertIsInstance(month, Month)
+        # self.assertEqual(months[0].name, "January") 
+        # self.assertEqual(months[11].name, "December") 
+
+    def test_assumes_current_year(self):
+        dash = Dashboard()
+        self.assertEqual(dash.year, datetime.date.today().year)
+
+    def test_past_months(self):
+        pass
         # TODO. Requires mocking date.
     
+    def test_ytd(self):
+        pass
+        # TODO. Requires mocking date.
     
+    def test_filters(self):
+        pass
+
+    def test_average_monthly_income(self):
+        pass
+
+    def test_average_monthly_expenses(self):
+        pass
+
+    def test_one_off_income(self):
+        pass
+
+    def test_one_off_expenses(self):
+        pass
+
+    def test_projected(self):
+        pass
+
+
+class PastDashboardTests(TestCase):
+    """
+    A dashboard from a previous year
+    that's already full.
+    """
+    
+    def setUp(self):
+        self.dash = Dashboard(year=2010)
+
+    def test_past_months(self):
+        pass
+        # TODO. Requires mocking date.
+    
+    def test_ytd(self):
+        pass
+        # TODO. Requires mocking date.
+    
+    def test_filters(self):
+        pass
+
+    def test_average_monthly_income(self):
+        pass
+
+    def test_average_monthly_expenses(self):
+        pass
+
+    def test_one_off_income(self):
+        pass
+
+    def test_one_off_expenses(self):
+        pass
+
+    def test_projected(self):
+        pass
+
 
 
