@@ -30,6 +30,7 @@ class ExpenseCategory(models.Model):
     class Meta:
         verbose_name = "Expense Category"
         verbose_name_plural = "Expense Categories"
+        ordering = ('title', )
 
     def total(self, month=datetime.date.today().month, year=datetime.date.today().year):
         """
@@ -60,6 +61,9 @@ class ExpenseCategory(models.Model):
 
 class IncomeCategory(models.Model):
     title = models.CharField(max_length=150)
+
+    class Meta:
+        ordering = ('title', )
 
     def __str__(self):
         return self.title
