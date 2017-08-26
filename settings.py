@@ -85,7 +85,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "dist")
 ]
 
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.CachedStaticFilesStorage"
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = os.environ["CHEAPSKATE_SECRET_KEY"]
