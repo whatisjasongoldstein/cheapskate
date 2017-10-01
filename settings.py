@@ -74,6 +74,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 365  # One year
+SESSION_COOKIE_SECURE = not DEBUG
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
