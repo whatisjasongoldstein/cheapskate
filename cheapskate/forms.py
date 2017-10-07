@@ -9,8 +9,15 @@ from .models import (Account, Charge, Withdrawal, Deposit,
     ExpenseCategory, IncomeCategory, CCBill)
 
 
-class ChargeForm(forms.ModelForm):
+class DefaultAccountMixin(object):
 
+    def __init__(self, *args, **kwargs):
+        super(DefaultAccountMixin, self).__init__(*args, **kwargs)
+        if self.fields["account"].queryset.count() > 0:
+            self.initial["account"] = self.fields["account"].queryset[0]
+
+
+class ChargeForm(DefaultAccountMixin, forms.ModelForm):
     date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
 
     class Meta:
@@ -18,7 +25,7 @@ class ChargeForm(forms.ModelForm):
         exclude = []
 
 
-class WithdrawalForm(forms.ModelForm):
+class WithdrawalForm(DefaultAccountMixin, forms.ModelForm):
     
     date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
 
@@ -27,7 +34,7 @@ class WithdrawalForm(forms.ModelForm):
         exclude = []
 
 
-class DepositForm(forms.ModelForm):
+class DepositForm(DefaultAccountMixin, forms.ModelForm):
 
     date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
 

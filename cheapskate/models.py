@@ -78,12 +78,14 @@ class IncomeCategory(models.Model):
 
 
 class Charge(models.Model):
-    """ A credit card change. """
+    """
+    A credit card change.
+    """
     title = models.CharField(max_length=250)
     amount = models.FloatField()
     date = models.DateField(default=datetime.date.today)
-    notes = models.TextField(blank=True, null=True)
     category = models.ForeignKey(ExpenseCategory)
+    notes = models.TextField(blank=True, null=True)
     paid = models.BooleanField(default=False)
     lost = models.BooleanField(default=False)
     account = models.ForeignKey(Account, limit_choices_to={'kind':'cc'})
@@ -165,8 +167,8 @@ class Deposit(models.Model):
     title = models.CharField(max_length=250)
     amount = models.FloatField()
     date = models.DateField(default=datetime.date.today)
-    notes = models.TextField(blank=True, null=True)
     category = models.ForeignKey(IncomeCategory, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
     account = models.ForeignKey(Account, limit_choices_to={'kind':'checking'})
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
     do_not_project = models.BooleanField("One-off Event", default=False)
@@ -198,8 +200,8 @@ class Withdrawal(models.Model):
     title = models.CharField(max_length=250)
     amount = models.FloatField()
     date = models.DateField(default=datetime.date.today)
-    notes = models.TextField(blank=True, null=True)
     category = models.ForeignKey(ExpenseCategory, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
     checkno = models.IntegerField("Check No.", blank=True, null=True)
     account = models.ForeignKey(Account, limit_choices_to={'kind':'checking'})
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
