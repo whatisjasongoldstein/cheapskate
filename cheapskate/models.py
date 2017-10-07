@@ -83,8 +83,8 @@ class Charge(models.Model):
     """
     title = models.CharField(max_length=250)
     amount = models.FloatField()
-    date = models.DateField(default=datetime.date.today)
     category = models.ForeignKey(ExpenseCategory)
+    date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
     paid = models.BooleanField(default=False)
     lost = models.BooleanField(default=False)
@@ -166,8 +166,8 @@ class Deposit(models.Model):
     """ Into a checking account. """
     title = models.CharField(max_length=250)
     amount = models.FloatField()
-    date = models.DateField(default=datetime.date.today)
     category = models.ForeignKey(IncomeCategory, blank=True, null=True)
+    date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
     account = models.ForeignKey(Account, limit_choices_to={'kind':'checking'})
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
@@ -199,8 +199,8 @@ class Withdrawal(models.Model):
     """ Out of a checking account. """
     title = models.CharField(max_length=250)
     amount = models.FloatField()
-    date = models.DateField(default=datetime.date.today)
     category = models.ForeignKey(ExpenseCategory, blank=True, null=True)
+    date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
     checkno = models.IntegerField("Check No.", blank=True, null=True)
     account = models.ForeignKey(Account, limit_choices_to={'kind':'checking'})
