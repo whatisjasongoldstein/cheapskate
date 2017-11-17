@@ -15,9 +15,60 @@
         {% endfor %}
     </select>
 
+    <div class="grid">
+        {% for month in dashboard.months %}
+            <div class="column" id="{{ month.name|lower }}">
+                <strong class="cell label--top">{{ month.name }}</strong>
+                <div class="cell-set">
+                    {% for category in month.expense_categories %}
+                        <div class="cell category-sum">
+                            <span class="title">{{ category.title }}</span>
+                            {{ category.total|floatformat:2|intcomma }}
+                        </div>
+                    {% endfor %}
+                    <div class="cell category-sum is-total">
+                        <span class="title">Total</span>
+                        {{ month.totals.expenses|floatformat:2|intcomma }}
+                    </div>
+                </div>
+                <div class="cell-set">
+                    {% for category in month.income_categories %}
+                        <div class="cell category-sum">
+                            <span class="title">{{ category.title }}</span>
+                            {{ category.total|floatformat:2|intcomma }}
+                        </div>
+                    {% endfor %}
+                    <div class="cell category-sum is-total">
+                        <span class="title">Total</span>
+                        {{ month.totals.income|floatformat:2|intcomma }}
+                    </div>
+                </div>
+                <div class="cell-set">
+                    <div class="cell category-sum" data-label="Net">
+                        <span class="title">Net</span>
+                        <b>{{ month.totals.net|floatformat:2|intcomma }}</b>
+                    </div>
+                    <div class="cell category-sum" data-label="Percent">
+                        <span class="title">Percent</span>
+                        {% with month.totals.percent as num %}
+                        <b class="{% if num < 0 %}danger
+                                    {% elif num < 15 %}warning
+                                    {% elif num < 20 %}fair
+                                    {% elif num >= 20 %}good
+                                    {% elif not num %}null
+                                {% endif %}">
+                        {{ month.totals.percent|default:"0" }}%</b>
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
     <ul class="months">
     {% for month in dashboard.months %}
-        <li id="{{ month.name|lower }}">
+        <li id="x{{ month.name|lower }}">
             <h2>{{ month.name }}</h2>
             <ol class="group">
                 {% for category in month.expense_categories %}

@@ -72,12 +72,12 @@ class Dashboard(object):
         self.year = year or self.today.year
 
         # Make this query here once and pass it around.
-        expense_categories = list(ExpenseCategory.objects.all().order_by("title"))
-        income_categories = list(IncomeCategory.objects.all().order_by("title"))
+        self.expense_categories = list(ExpenseCategory.objects.all().order_by("title"))
+        self.income_categories = list(IncomeCategory.objects.all().order_by("title"))
 
         self.months = [Month(i, self.year,
-            expense_categories=expense_categories,
-            income_categories=income_categories) for i in range(1, 13)]
+            expense_categories=self.expense_categories,
+            income_categories=self.income_categories) for i in range(1, 13)]
 
     @property
     def today(self):
