@@ -115,14 +115,3 @@ CreditCardChargeFilter.prototype.render = function(context) {
     <p class="status"><b></b> remaining</p>
   `;
 }
-
-
-let el = document.querySelector("[data-credit-card-charge-filter]");
-if (el) {
-    let creditCardChargeFilter = new CreditCardChargeFilter({
-        el: el, 
-        amountEl: document.getElementById("id_amount")
-    });
-}
-
-// export default l component = CreditCardChargeFilter;
