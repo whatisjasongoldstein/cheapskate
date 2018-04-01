@@ -104,9 +104,9 @@ gulp.task("js", () => {
 });
 
 
-gulp.task('watch', function() {
+gulp.task('default', ["img"], function() {
   gulp.watch('frontend/**/*.scss', ['css']);
   gulp.watch('frontend/**/*.js', ['js']);
 });
 
-gulp.task("default", ["css", "js", "img"]);
+gulp.task("build", ["css", "js", "img"]);
