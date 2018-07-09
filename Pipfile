@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+"psycopg2" = "==2.7.1"
+python-memcached = "==1.57"
+libsass = "==0.8.3"
+raven = "==5.8.1"
+django-debug-toolbar = "==1.6"
+Django = "==1.11"
+
+[dev-packages]
+Fabric = "==1.10.2"
+
+[requires]
+python_version = "3.6"
