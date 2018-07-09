@@ -10,6 +10,7 @@ libsass = "==0.8.3"
 django-debug-toolbar = "==1.6"
 Django = "==1.11"
 raven = "*"
+gunicorn = "*"
 
 [dev-packages]
 "fabric3" = "*"
