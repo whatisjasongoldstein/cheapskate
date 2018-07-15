@@ -194,5 +194,14 @@ class Dashboard(object):
             data["percent"] = int(round((data["net"] / data["income"]) * 100))
         return data
 
+    @cached_property
+    def for_chart(self):
+        return {
+            "incomes": [int(m.totals['income']) for m in 
+                self.months if m.totals['income'] > 0],
+            "expenses": [int(m.totals['expenses']) for m in 
+                self.months if m.totals['expenses'] > 0],
+        }
+
 
 

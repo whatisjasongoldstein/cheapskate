@@ -1,0 +1,84 @@
+const lib = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js';
+
+function sum(arr) {
+  return arr.reduce((total, num) => total + num);
+}
+
+function range(start, end, increment) {
+  if (increment === undefined) {
+    increment = 1;
+  }
+
+  const result = [];
+  for (var i = start; i <= end; i++) {
+    result.push(i);
+  }
+  return result
+}
+
+function drawChart(config) {
+
+  const months = range(1, 12);
+
+  const monthsCovered = Math.min(config.incomes.length, config.expenses.length);
+  const incomes = config.incomes.slice(0, monthsCovered);
+  const expenses = config.expenses.slice(0, monthsCovered);
+
+  const nets = range(1, monthsCovered).map((month, index) => {
+    const incomeToDate = sum(incomes.slice(0, index + 1));
+    const expensesToDate = sum(expenses.slice(0, index + 1));
+    return incomeToDate - expensesToDate;
+  });
+
+  const myChart = new Chart(document.querySelector(config.element), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Income',
+        data: incomes,
+        backgroundColor: 'transparent',
+        borderColor: 'darkgreen',
+      }, {
+        label: 'Expenses',
+        data: expenses,
+        backgroundColor: 'transparent',
+        borderColor: 'maroon',
+      }, {
+        label: 'Net',
+        data: nets,
+        backgroundColor: 'transparent',
+        borderColor: 'black',
+      }]
+    },
+    options: {
+      responsive: false,
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      },
+      legend: {
+        position: 'bottom',
+        usePointStyle: true,
+        labels: {
+          boxWidth: 10,
+        }
+      }
+    }
+  });
+}
+
+export function loadChart() {
+  if (!window.chartConfig) {
+    return;
+  }
+
+  const script = document.createElement('script');
+  script.src = lib;
+  script.defer = true;
+  script.onload = () => drawChart(window.chartConfig);
+  document.body.appendChild(script);
+}

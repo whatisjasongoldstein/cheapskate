@@ -1,7 +1,7 @@
 import './widgets';
 import CreditCardChargeFilter from './credit-card-admin';
 import handleKeyboard from './keyboard-shortcuts';
-
+import { loadChart } from './graph';
 
 // Credit Card Filters
 let el = document.querySelector("[data-credit-card-charge-filter]");
@@ -15,3 +15,4 @@ if (el) {
 // Keyboard shortcuts
 window.addEventListener('keyup', handleKeyboard, false);
 
+loadChart();

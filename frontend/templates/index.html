@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load jsonify from helpers %}
+
 {% block content %}
 
 <div class="overview">
@@ -49,6 +51,9 @@
         </li>            
     {% endfor %}
     </ul>
+
+    <section class="analysis">
+      
 
     <div class="year-overview">
         <table>
@@ -119,6 +124,16 @@
             </tbody>
         </table>
     </div>
+    <canvas class="js-chart" height="300"></canvas>
+    </section>
 </div>
+
+<script>
+  window.chartConfig = {
+    element: '.js-chart',
+    incomes: {{ dashboard.for_chart.incomes|jsonify }},
+    expenses: {{ dashboard.for_chart.expenses|jsonify }},
+  }
+</script>
 
 {% endblock content %}

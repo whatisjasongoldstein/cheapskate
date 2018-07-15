@@ -98,7 +98,7 @@ $break-3-months: 600px;
 }
 
 .year-overview {
-    margin: 2rem 0;
+    margin: 0 1rem 2rem 0;
     table {
         border-collapse: collapse;
         border-top: 4px solid black;
@@ -122,5 +122,19 @@ $break-3-months: 600px;
 
     td {
         text-align: right;
+    }
+}
+
+.overview .analysis {
+    display: flex;
+
+    flex-direction: column;
+    @media (min-width: $break-6-months) {
+      flex-direction: row;
+    }
+
+    canvas {
+      width: 100%;
+      min-height: 250px;
     }
 }
