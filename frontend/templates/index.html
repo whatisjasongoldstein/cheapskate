@@ -23,7 +23,10 @@
             <h2>{{ month.name }}</h2>
             <ol class="group">
                 {% for category in month.expense_categories %}
-                    <li><span class="title">{{ category.title }}</span> {{ category.total|floatformat:2|intcomma }}</li>
+                    <li>
+                        <span class="title">{{ category.title }}</span>
+                        <span title="{% widthratio category.total month.totals.expenses 100 %}%">{{ category.total|floatformat:2|intcomma }}</span>
+                        </li>
                 {% endfor %}
                 <li class="total"><span class="title">Total</span> {{ month.totals.expenses|floatformat:2|intcomma }}</li>
             </ol>
