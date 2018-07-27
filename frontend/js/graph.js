@@ -19,10 +19,15 @@ function range(start, end, increment) {
 function drawChart(config) {
 
   const months = range(1, 12);
-
   const monthsCovered = Math.min(config.incomes.length, config.expenses.length);
-  const incomes = config.incomes.slice(0, monthsCovered);
-  const expenses = config.expenses.slice(0, monthsCovered);
+
+  // Omit future events and convert to thousands
+  const incomes = config.incomes.slice(0, monthsCovered).map((val) => {
+    return Math.round(val / 1000);
+  });
+  const expenses = config.expenses.slice(0, monthsCovered).map((val) => {
+    return Math.round(val / 1000);
+  });
 
   const nets = range(1, monthsCovered).map((month, index) => {
     const incomeToDate = sum(incomes.slice(0, index + 1));
@@ -56,7 +61,14 @@ function drawChart(config) {
       scales: {
         yAxes: [{
           ticks: {
-            beginAtZero: true
+            beginAtZero: true,
+            stepSize: 1,
+            callback: (value, index, values) => {
+              if (value) {
+                value = `${value}k`;
+              }
+              return value;
+            }
           }
         }]
       },
