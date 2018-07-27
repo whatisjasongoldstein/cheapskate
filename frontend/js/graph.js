@@ -1,24 +1,29 @@
 const lib = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js';
 
+const months = [
+  'Jan.',
+  'Feb.',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'Aug.',
+  'Sept.',
+  'Oct.',
+  'Nov.',
+  'Dec.',
+]
+
+/**
+ * Add up all the numbers in an array
+ */
 function sum(arr) {
   return arr.reduce((total, num) => total + num);
 }
 
-function range(start, end, increment) {
-  if (increment === undefined) {
-    increment = 1;
-  }
-
-  const result = [];
-  for (var i = start; i <= end; i++) {
-    result.push(i);
-  }
-  return result
-}
-
 function drawChart(config) {
 
-  const months = range(1, 12);
   const monthsCovered = Math.min(config.incomes.length, config.expenses.length);
 
   // Omit future events and convert to thousands
