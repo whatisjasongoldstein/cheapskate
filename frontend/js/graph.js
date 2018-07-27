@@ -15,6 +15,18 @@ const months = [
   'Dec.',
 ]
 
+function range(start, end, increment) {
+  if (increment === undefined) {
+    increment = 1;
+  }
+
+  const result = [];
+  for (var i = start; i <= end; i++) {
+    result.push(i);
+  }
+  return result
+}
+
 /**
  * Add up all the numbers in an array
  */
