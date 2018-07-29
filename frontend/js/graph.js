@@ -27,6 +27,11 @@ function range(start, end, increment) {
   return result
 }
 
+function roundDecimal(num, places) {
+  num = num.toFixed(places);
+  return parseFloat(num);
+}
+
 /**
  * Add up all the numbers in an array
  */
@@ -40,10 +45,12 @@ function drawChart(config) {
 
   // Omit future events and convert to thousands
   const incomes = config.incomes.slice(0, monthsCovered).map((val) => {
-    return Math.round(val / 1000);
+    // return roundDecimal(val / 1000, 1);
+    return val;
   });
   const expenses = config.expenses.slice(0, monthsCovered).map((val) => {
-    return Math.round(val / 1000);
+    // return roundDecimal(val / 1000, 1);
+    return val;
   });
 
   const nets = range(1, monthsCovered).map((month, index) => {
@@ -79,15 +86,30 @@ function drawChart(config) {
         yAxes: [{
           ticks: {
             beginAtZero: true,
-            stepSize: 1,
+            stepSize: 1000,
             callback: (value, index, values) => {
               if (value) {
-                value = `${value}k`;
+                value = `${value / 1000}k`;
               }
               return value;
             }
           }
         }]
+      },
+      tooltips: {
+        callbacks: {
+          label: function(tooltipItem, data) {
+            // @see: http://www.chartjs.org/docs/latest/configuration/tooltip.html#tooltip-callbacks
+            return tooltipItem.yLabel.toLocaleString("en-US");
+          },
+          labelColor: function(tooltipItem, chart) {
+            const color = chart.config.data.datasets[tooltipItem.datasetIndex].borderColor;
+            return {
+              borderColor: color,
+              backgroundColor: color,
+            }
+          },
+        }
       },
       legend: {
         position: 'bottom',
@@ -95,7 +117,10 @@ function drawChart(config) {
         labels: {
           boxWidth: 10,
         }
-      }
+      },
+      animation: {
+          duration: 0, // general animation time
+      },
     }
   });
 }
