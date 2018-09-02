@@ -74,7 +74,7 @@ function drawChart(config) {
         label: 'One off Income',
         data: incomes_one_off,
         backgroundColor: 'transparent',
-        borderColor: 'rgba(128, 0, 128, .2)',  // Purple 20%
+        borderColor: 'rgba(0, 0, 128, .2)',  // Blue 20%
       }, {
         label: 'Normal Income',
         data: incomes_normal,
