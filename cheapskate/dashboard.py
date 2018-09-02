@@ -24,6 +24,37 @@ def sum_expense(**kwargs):
     withdrawal_kwargs["category__isnull"] = False
     return sum_amounts(Withdrawal, withdrawal_kwargs) + sum_amounts(Charge, kwargs)
 
+def get_expenses(month, year, category=None, one_off=None):
+    kwargs = {
+        "date__month": month,
+        "date__year": year,
+        "category__isnull": False,
+    }
+    
+    if category:
+        kwargs["category"] = category
+
+    if one_off is not None:
+        kwargs["do_not_project"] = one_off
+
+    return sum_amounts(Charge, kwargs) + sum_amounts(Withdrawal, kwargs)
+
+
+def get_incomes(month, year, category=None, one_off=None):
+    kwargs = {
+        "date__month": month,
+        "date__year": year,
+        "category__isnull": False,
+    }
+    
+    if category:
+        kwargs["category"] = category
+
+    if one_off is not None:
+        kwargs["do_not_project"] = one_off
+
+    return sum_amounts(Deposit, kwargs)
+
 
 class Month(object):
     
@@ -196,12 +227,22 @@ class Dashboard(object):
 
     @cached_property
     def for_chart(self):
-        return {
-            "incomes": [int(m.totals['income']) for m in 
-                self.months if m.totals['income'] > 0],
-            "expenses": [int(m.totals['expenses']) for m in 
-                self.months if m.totals['expenses'] > 0],
+        data = {
+            "incomes": [],
+            "incomes_normal": [],
+            "incomes_one_off": [],
+            "expenses": [],
+            "expenses_normal": [],
+            "expenses_one_off": [],
         }
 
+        for m in self.months:
+            data["incomes"].append(get_incomes(m.index, m.year))
+            data["incomes_normal"].append(get_incomes(m.index, m.year, one_off=False))
+            data["incomes_one_off"].append(get_incomes(m.index, m.year, one_off=True))
 
+            data["expenses"].append(get_expenses(m.index, m.year))
+            data["expenses_normal"].append(get_expenses(m.index, m.year, one_off=False))
+            data["expenses_one_off"].append(get_expenses(m.index, m.year, one_off=True))
+        return data
 

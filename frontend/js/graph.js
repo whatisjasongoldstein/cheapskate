@@ -41,17 +41,19 @@ function sum(arr) {
 
 function drawChart(config) {
 
-  const monthsCovered = Math.min(config.incomes.length, config.expenses.length);
+  const monthsCovered = Math.min(
+                          config.data.incomes.filter((i) => i > 0).length,
+                          config.data.expenses.filter((i) => i > 0).length
+                        );
 
-  // Omit future events and convert to thousands
-  const incomes = config.incomes.slice(0, monthsCovered).map((val) => {
-    // return roundDecimal(val / 1000, 1);
-    return val;
-  });
-  const expenses = config.expenses.slice(0, monthsCovered).map((val) => {
-    // return roundDecimal(val / 1000, 1);
-    return val;
-  });
+  // Omit future events
+  const incomes = config.data.incomes.slice(0, monthsCovered);
+  const expenses = config.data.expenses.slice(0, monthsCovered);
+
+  const incomes_normal = config.data.incomes_normal.slice(0, monthsCovered);
+  const incomes_one_off = config.data.incomes_one_off.slice(0, monthsCovered);
+  const expenses_normal = config.data.expenses_normal.slice(0, monthsCovered);
+  const expenses_one_off = config.data.expenses_one_off.slice(0, monthsCovered);
 
   const nets = range(1, monthsCovered).map((month, index) => {
     const incomeToDate = sum(incomes.slice(0, index + 1));
@@ -59,20 +61,40 @@ function drawChart(config) {
     return incomeToDate - expensesToDate;
   });
 
-  const myChart = new Chart(document.querySelector(config.element), {
+  const chart = new Chart(document.querySelector(config.element), {
     type: 'line',
     data: {
       labels: months,
       datasets: [{
-        label: 'Income',
+        label: 'All Income',
         data: incomes,
         backgroundColor: 'transparent',
         borderColor: 'darkgreen',
       }, {
-        label: 'Expenses',
+        label: 'One off Income',
+        data: incomes_one_off,
+        backgroundColor: 'transparent',
+        borderColor: 'rgba(128, 0, 128, .2)',  // Purple 20%
+      }, {
+        label: 'Normal Income',
+        data: incomes_normal,
+        backgroundColor: 'transparent',
+        borderColor: 'rgba(0, 100, 0, .2)',  // Dark green 20%
+      }, {
+        label: 'All Expenses',
         data: expenses,
         backgroundColor: 'transparent',
         borderColor: 'maroon',
+      }, {
+        label: 'Normal Expenses',
+        data: expenses_normal,
+        backgroundColor: 'transparent',
+        borderColor: 'rgba(128, 0, 0, .2)',  // Maroon 20%
+      }, {
+        label: 'One Off Expenses',
+        data: expenses_one_off,
+        backgroundColor: 'transparent',
+        borderColor: 'rgba(255, 0, 0, .2)',  // Transparent
       }, {
         label: 'Net',
         data: nets,

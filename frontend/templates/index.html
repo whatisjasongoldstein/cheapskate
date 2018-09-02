@@ -134,8 +134,7 @@
 <script>
   window.chartConfig = {
     element: '.js-chart',
-    incomes: {{ dashboard.for_chart.incomes|jsonify }},
-    expenses: {{ dashboard.for_chart.expenses|jsonify }},
+    data: {{ dashboard.for_chart|jsonify }},
   }
 </script>
 
