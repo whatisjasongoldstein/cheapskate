@@ -74,12 +74,14 @@ function drawChart(config) {
         label: 'One off Income',
         data: incomes_one_off,
         backgroundColor: 'transparent',
-        borderColor: 'rgba(0, 0, 128, .2)',  // Blue 20%
+        borderColor: 'lightblue',
+        borderWidth: 1,
       }, {
         label: 'Normal Income',
         data: incomes_normal,
         backgroundColor: 'transparent',
-        borderColor: 'rgba(0, 100, 0, .2)',  // Dark green 20%
+        borderColor: 'lightgreen',
+        borderWidth: 1,
       }, {
         label: 'All Expenses',
         data: expenses,
@@ -89,12 +91,14 @@ function drawChart(config) {
         label: 'Normal Expenses',
         data: expenses_normal,
         backgroundColor: 'transparent',
-        borderColor: 'rgba(128, 0, 0, .2)',  // Maroon 20%
+        borderColor: 'red',
+        borderWidth: 1,
       }, {
         label: 'One Off Expenses',
         data: expenses_one_off,
         backgroundColor: 'transparent',
-        borderColor: 'rgba(255, 0, 0, .2)',  // Transparent
+        borderColor: 'orange',
+        borderWidth: 1,
       }, {
         label: 'Net',
         data: nets,
