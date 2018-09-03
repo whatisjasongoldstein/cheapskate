@@ -4,6 +4,8 @@
     <td class="amount">${{ obj.amount|floatformat:2|intcomma }}</td>
     <td>{{ obj.date|date:"M d, 'y" }}</td>
     <td>{{ obj.category|default:"" }}</td>
+    <td>Foobar</td>
+    <td><span title="One off event">{{ obj.do_not_project|yesno:"✱," }}</span></td>
     <td>{% firstof obj.checkno "" %}</td>
     <td>{{ obj.account }}</td>
 </tr>
