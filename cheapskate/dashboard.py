@@ -26,10 +26,12 @@ def sum_expense(**kwargs):
 
 def get_expenses(month, year, category=None, one_off=None):
     kwargs = {
-        "date__month": month,
         "date__year": year,
         "category__isnull": False,
     }
+
+    if month is not None:
+        kwargs["date__month"] = month
     
     if category:
         kwargs["category"] = category
