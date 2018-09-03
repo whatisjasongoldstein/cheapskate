@@ -78,14 +78,14 @@ class Month(object):
         for category in _expense_categories:
             self.expense_categories.append({
                 "title": category.title,
-                "total": category.total(month=self.index, year=self.year)
+                "total": get_expenses(index, year, category=category)
             })
 
         self.income_categories = []
         for category in _income_categories:
             self.income_categories.append({
                 "title": category.title,
-                "total": category.total(month=self.index, year=self.year)
+                "total": get_incomes(index, year, category=category)
             })
 
 

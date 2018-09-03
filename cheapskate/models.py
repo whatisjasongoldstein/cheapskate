@@ -21,60 +21,27 @@ class Account(models.Model):
         return self.title
 
 
-class ExpenseCategory(models.Model):
+class Category(models.Model):
     title = models.CharField(max_length=150)
 
     def __str__(self):
         return self.title
 
+    class Meta:
+        abstract = True
+        ordering = ('title', )
+
+
+class ExpenseCategory(Category):
     class Meta:
         verbose_name = "Expense Category"
         verbose_name_plural = "Expense Categories"
-        ordering = ('title', )
-
-    def total(self, month=datetime.date.today().month, year=datetime.date.today().year):
-        """
-        Returns the total expenses for the category in a given month.
-        """
-        total_charges = (Charge.objects.filter(
-                    category_id=self.id, 
-                    date__year=year,
-                    date__month=month,
-                    ).aggregate(models.Sum("amount"))["amount__sum"] or 0)
-
-        qs = Charge.objects.filter(
-            category_id=self.id, 
-            date__year=year,
-            date__month=month,
-        )
-        total_charges = (qs.aggregate(models.Sum("amount"))["amount__sum"] or 0)
-
-        qs = Withdrawal.objects.filter(
-                category_id=self.id, 
-                date__year=year,
-                date__month=month,
-            )
-        total_withdraws = (qs.aggregate(models.Sum("amount"))["amount__sum"] or 0)
-
-        return total_charges + total_withdraws
 
 
-class IncomeCategory(models.Model):
-    title = models.CharField(max_length=150)
-
+class IncomeCategory(Category):
     class Meta:
-        ordering = ('title', )
-
-    def __str__(self):
-        return self.title
-
-    def total(self, month=datetime.date.today().month, year=datetime.date.today().year):
-        data = Deposit.objects.filter(
-            category_id=self.id, 
-            date__year=year,
-            date__month=month,
-        ).aggregate(models.Sum("amount"))
-        return (data["amount__sum"] or 0)
+        verbose_name = "Income Category"
+        verbose_name_plural = "Income Categories"
 
 
 class Charge(models.Model):
