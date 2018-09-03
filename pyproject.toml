@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "cheapskate"
+version = "1.0.0"
+description = ""
+authors = ["Jason Goldstein <jason@betheshoe.com>"]
+
+[tool.poetry.dependencies]
+python = "3.6.*"
+psycopg2 = "^2.7"
+gunicorn = "^19.9"
+django-debug-toolbar = "^1.9"
+libsass = "^0.14.5"
+python-memcached = "^1.59"
+Django = "^2.1"
+raven = "^6.9"
+
+[tool.poetry.dev-dependencies]
+fabric3 = "^1.14"
+ipython = "^6.5"
+ipdb = "^0.11.0"

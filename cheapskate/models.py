@@ -1,7 +1,7 @@
 import datetime
 from django.db import models
 from django.db.models import Q
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.template.defaultfilters import floatformat
 
@@ -83,12 +83,13 @@ class Charge(models.Model):
     """
     title = models.CharField(max_length=250)
     amount = models.FloatField()
-    category = models.ForeignKey(ExpenseCategory)
+    category = models.ForeignKey(ExpenseCategory, null=True, on_delete=models.SET_NULL)
     date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
     paid = models.BooleanField(default=False)
     lost = models.BooleanField(default=False)
-    account = models.ForeignKey(Account, limit_choices_to={'kind':'cc'})
+    account = models.ForeignKey(Account, limit_choices_to={'kind':'cc'}, null=True,
+        on_delete=models.SET_NULL)
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
     do_not_project = models.BooleanField("One-off Event", default=False)
 
@@ -124,7 +125,7 @@ class CCBill(models.Model):
     date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
     charges = models.ManyToManyField('Charge', blank=True)
-    account = models.ForeignKey(Account)
+    account = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return "%(date_sting)s for %(amount)s" % {
@@ -166,10 +167,11 @@ class Deposit(models.Model):
     """ Into a checking account. """
     title = models.CharField(max_length=250)
     amount = models.FloatField()
-    category = models.ForeignKey(IncomeCategory, blank=True, null=True)
+    category = models.ForeignKey(IncomeCategory, blank=True, null=True, on_delete=models.SET_NULL)
     date = models.DateField(default=datetime.date.today)
-    notes = models.TextField(blank=True, null=True)
-    account = models.ForeignKey(Account, limit_choices_to={'kind':'checking'})
+    notes = models.TextField(blank=True, default="")
+    account = models.ForeignKey(Account, null=True,
+        limit_choices_to={'kind':'checking'}, on_delete=models.SET_NULL)
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
     do_not_project = models.BooleanField("One-off Event", default=False)
 
@@ -199,11 +201,13 @@ class Withdrawal(models.Model):
     """ Out of a checking account. """
     title = models.CharField(max_length=250)
     amount = models.FloatField()
-    category = models.ForeignKey(ExpenseCategory, blank=True, null=True)
+    category = models.ForeignKey(ExpenseCategory, blank=True, null=True,
+        on_delete=models.SET_NULL)
     date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
     checkno = models.IntegerField("Check No.", blank=True, null=True)
-    account = models.ForeignKey(Account, limit_choices_to={'kind':'checking'})
+    account = models.ForeignKey(Account, null=True,
+        limit_choices_to={'kind':'checking'}, on_delete=models.SET_NULL)
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
     do_not_project = models.BooleanField("One-off Event", default=False)
 

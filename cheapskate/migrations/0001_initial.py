@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('amount', models.FloatField()),
                 ('date', models.DateField()),
                 ('notes', models.TextField(null=True, blank=True)),
-                ('account', models.ForeignKey(to='cheapskate.Account')),
+                ('account', models.ForeignKey(to='cheapskate.Account', on_delete=models.SET_NULL)),
             ],
             options={
                 'verbose_name': 'Credit Card Bill',
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('notes', models.TextField(null=True, blank=True)),
                 ('paid', models.BooleanField(default=False)),
                 ('lost', models.BooleanField(default=False)),
-                ('account', models.ForeignKey(to='cheapskate.Account')),
+                ('account', models.ForeignKey(to='cheapskate.Account', on_delete=models.SET_NULL)),
             ],
         ),
         migrations.CreateModel(
@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
                 ('amount', models.FloatField()),
                 ('date', models.DateField()),
                 ('notes', models.TextField(null=True, blank=True)),
-                ('account', models.ForeignKey(to='cheapskate.Account')),
+                ('account', models.ForeignKey(to='cheapskate.Account', on_delete=models.SET_NULL)),
             ],
         ),
         migrations.CreateModel(
@@ -83,19 +83,19 @@ class Migration(migrations.Migration):
                 ('date', models.DateField()),
                 ('notes', models.TextField(null=True, blank=True)),
                 ('checkno', models.IntegerField(null=True, blank=True)),
-                ('account', models.ForeignKey(to='cheapskate.Account')),
-                ('category', models.ForeignKey(blank=True, to='cheapskate.ExpenseCategory', null=True)),
+                ('account', models.ForeignKey(to='cheapskate.Account', on_delete=models.SET_NULL)),
+                ('category', models.ForeignKey(blank=True, to='cheapskate.ExpenseCategory', null=True, on_delete=models.SET_NULL)),
             ],
         ),
         migrations.AddField(
             model_name='deposit',
             name='category',
-            field=models.ForeignKey(blank=True, to='cheapskate.IncomeCategory', null=True),
+            field=models.ForeignKey(blank=True, to='cheapskate.IncomeCategory', null=True, on_delete=models.SET_NULL),
         ),
         migrations.AddField(
             model_name='charge',
             name='category',
-            field=models.ForeignKey(to='cheapskate.ExpenseCategory'),
+            field=models.ForeignKey(to='cheapskate.ExpenseCategory', on_delete=models.SET_NULL),
         ),
         migrations.AddField(
             model_name='ccbill',
