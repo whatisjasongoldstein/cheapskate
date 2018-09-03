@@ -4,6 +4,6 @@
     <td class="amount">${{ obj.amount|floatformat:2|intcomma }}</td>
     <td>{{ obj.date|date:"M d, 'y" }}</td>
     <td>{{ obj.category|default:"" }}</td>
-    <td><span title="One off event">{{ obj.do_not_project|yesno:"✱," }}</span></td>
+    <td><span title="One off event">{{ obj.is_one_off|yesno:"✱," }}</span></td>
     <td class="paid"><i class="fa {{ obj.paid|yesno:"fa-check-circle-o,fa-circle-o" }}"></i></td>
 </tr>

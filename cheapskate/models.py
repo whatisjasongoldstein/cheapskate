@@ -58,7 +58,7 @@ class Charge(models.Model):
     account = models.ForeignKey(Account, limit_choices_to={'kind':'cc'}, null=True,
         on_delete=models.SET_NULL)
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
-    do_not_project = models.BooleanField("One-off Event", default=False)
+    is_one_off = models.BooleanField("One-off Event", default=False)
 
     def __str__(self):
         try:
@@ -140,7 +140,7 @@ class Deposit(models.Model):
     account = models.ForeignKey(Account, null=True,
         limit_choices_to={'kind':'checking'}, on_delete=models.SET_NULL)
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
-    do_not_project = models.BooleanField("One-off Event", default=False)
+    is_one_off = models.BooleanField("One-off Event", default=False)
 
     def __str__(self):
         return self.title
@@ -176,7 +176,7 @@ class Withdrawal(models.Model):
     account = models.ForeignKey(Account, null=True,
         limit_choices_to={'kind':'checking'}, on_delete=models.SET_NULL)
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
-    do_not_project = models.BooleanField("One-off Event", default=False)
+    is_one_off = models.BooleanField("One-off Event", default=False)
 
     def __str__(self):
         return self.title

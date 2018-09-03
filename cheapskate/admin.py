@@ -17,8 +17,8 @@ class AccountAdmin(admin.ModelAdmin):
 
 class ChargeAdmin(admin.ModelAdmin):
 	list_display = ['title', 'amount', 'date', 'category', 'paid', 
-					'account', 'do_not_project']
-	list_filter = ['category', 'date', 'paid', 'account', 'do_not_project']
+					'account', 'is_one_off']
+	list_filter = ['category', 'date', 'paid', 'account', 'is_one_off']
 	search_fields = ['title', 'amount',]
 	list_editable = ['category',]
 	ordering = ['-date']
@@ -31,16 +31,16 @@ class CCBillAdmin(admin.ModelAdmin):
 
 class DepositAdmin(admin.ModelAdmin):
 	list_display = ['title', 'amount', 'date', 'category', 'account',
-					'do_not_project']
+					'is_one_off']
 	list_editable = ['category',]
-	list_filter = ['date', 'account', 'category', 'do_not_project']
+	list_filter = ['date', 'account', 'category', 'is_one_off']
 	ordering = ['-date']
 	search_fields = ['title', 'amount']
 
 class WithdrawalAdmin(admin.ModelAdmin):
-	list_display = ['title', 'amount', 'date', 'category', 'account', 'do_not_project']
+	list_display = ['title', 'amount', 'date', 'category', 'account', 'is_one_off']
 	list_editable = ['category',]
-	list_filter = ['date','account', 'category', 'do_not_project']
+	list_filter = ['date','account', 'category', 'is_one_off']
 	ordering = ['-date']
 	search_fields = ['title', 'amount']
 

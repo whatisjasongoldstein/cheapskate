@@ -321,7 +321,7 @@ class ActiveDashboardTests(TestCase):
             date=datetime.date(2017, 4, 1),
             category=self.exp_category,
             account=self.cc,
-            do_not_project=True,
+            is_one_off=True,
         )
 
         Deposit.objects.create(
@@ -330,7 +330,7 @@ class ActiveDashboardTests(TestCase):
             date=datetime.date(2017, 5, 15),
             account=self.bank,
             category=self.inc_category,
-            do_not_project=True,
+            is_one_off=True,
         )
 
         class TestDashboard(Dashboard):
@@ -434,7 +434,7 @@ class PastDashboardTests(TestCase):
             date=datetime.date(2010, 4, 1),
             category=self.exp_category,
             account=self.cc,
-            do_not_project=True,
+            is_one_off=True,
         )
 
         Deposit.objects.create(
@@ -443,7 +443,7 @@ class PastDashboardTests(TestCase):
             date=datetime.date(2010, 5, 15),
             account=self.bank,
             category=self.inc_category,
-            do_not_project=True,
+            is_one_off=True,
         )
 
         self.dash = Dashboard(year=2010)

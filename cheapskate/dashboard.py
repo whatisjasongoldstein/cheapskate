@@ -35,7 +35,7 @@ def get_expenses(month, year, category=None, one_off=None):
         kwargs["category"] = category
 
     if one_off is not None:
-        kwargs["do_not_project"] = one_off
+        kwargs["is_one_off"] = one_off
 
     return sum_amounts(Charge, kwargs) + sum_amounts(Withdrawal, kwargs)
 
@@ -51,7 +51,7 @@ def get_incomes(month, year, category=None, one_off=None):
         kwargs["category"] = category
 
     if one_off is not None:
-        kwargs["do_not_project"] = one_off
+        kwargs["is_one_off"] = one_off
 
     return sum_amounts(Deposit, kwargs)
 
@@ -145,12 +145,12 @@ class Dashboard(object):
             PAST: {
                 "date__year": self.year,
                 "date__month__in": [m.index for m in self.past_months],
-                "do_not_project": False,
+                "is_one_off": False,
                 "category__isnull": False, 
             },
             ONE_OFF: {
                 "date__year": self.year,
-                "do_not_project": True,
+                "is_one_off": True,
                 "category__isnull": False, 
             }
         }
