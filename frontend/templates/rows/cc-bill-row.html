@@ -1,9 +1,10 @@
 {% load humanize %}
 <tr>
     <td><a href="{{ obj.get_absolute_url }}">{{ obj.date }}</a></td>
+    <td>{{ obj.account }}</td>
     <td class="amount">For ${{ obj.amount|floatformat:2|intcomma }}</td>
-    <td>Linked to ${{ obj.total_charges|floatformat:2|intcomma }}</td>
     <td>{{ obj.balances }}</td>
+    <td></td>
     <td>
         {% if not obj.is_paid %}
         <button alt="Paid bill"

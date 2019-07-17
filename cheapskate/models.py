@@ -51,12 +51,12 @@ class Charge(models.Model):
     title = models.CharField(max_length=250)
     amount = models.FloatField()
     category = models.ForeignKey(ExpenseCategory, null=True, on_delete=models.SET_NULL)
+    account = models.ForeignKey(Account, limit_choices_to={'kind':'cc'}, null=True,
+        on_delete=models.SET_NULL)
     date = models.DateField(default=datetime.date.today)
     notes = models.TextField(blank=True, null=True)
     paid = models.BooleanField(default=False)
     lost = models.BooleanField(default=False)
-    account = models.ForeignKey(Account, limit_choices_to={'kind':'cc'}, null=True,
-        on_delete=models.SET_NULL)
     document = models.FileField(upload_to='copies/%Y/%m/', blank=True, null=True)
     is_one_off = models.BooleanField("One-off Event", default=False)
 
