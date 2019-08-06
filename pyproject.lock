@@ -1,21 +1,17 @@
 [[package]]
 category = "dev"
 description = "Disable App Nap on OS X 10.9"
+marker = "python_version >= \"3.3\" and sys_platform == \"darwin\" or sys_platform == \"darwin\""
 name = "appnope"
 optional = false
-platform = "UNKNOWN"
 python-versions = "*"
 version = "0.1.0"
-
-[package.requirements]
-platform = "darwin"
 
 [[package]]
 category = "dev"
 description = "Fast ASN.1 parser and serializer with definitions for private keys, public keys, certificates, CRL, OCSP, CMS, PKCS#3, PKCS#7, PKCS#8, PKCS#12, PKCS#5, X.509 and TSP"
 name = "asn1crypto"
 optional = false
-platform = "*"
 python-versions = "*"
 version = "0.24.0"
 
@@ -24,7 +20,6 @@ category = "dev"
 description = "Specifications for callback functions passed in to an API"
 name = "backcall"
 optional = false
-platform = "UNKNOWN"
 python-versions = "*"
 version = "0.1.0"
 
@@ -33,7 +28,6 @@ category = "dev"
 description = "Modern password hashing for your software and your servers"
 name = "bcrypt"
 optional = false
-platform = "*"
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "3.1.7"
 
@@ -46,7 +40,6 @@ category = "dev"
 description = "Foreign Function Interface for Python calling C code."
 name = "cffi"
 optional = false
-platform = "*"
 python-versions = "*"
 version = "1.12.3"
 
@@ -56,21 +49,17 @@ pycparser = "*"
 [[package]]
 category = "dev"
 description = "Cross-platform colored terminal text."
+marker = "python_version >= \"3.3\" and sys_platform == \"win32\" or sys_platform == \"win32\""
 name = "colorama"
 optional = false
-platform = "*"
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.4.1"
-
-[package.requirements]
-platform = "win32"
 
 [[package]]
 category = "dev"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
 name = "cryptography"
 optional = false
-platform = "*"
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 version = "2.7"
 
@@ -84,7 +73,6 @@ category = "dev"
 description = "Better living through Python with decorators"
 name = "decorator"
 optional = false
-platform = "All"
 python-versions = ">=2.6, !=3.0.*, !=3.1.*"
 version = "4.4.0"
 
@@ -93,9 +81,8 @@ category = "main"
 description = "A high-level Python Web framework that encourages rapid development and clean, pragmatic design."
 name = "django"
 optional = false
-platform = "*"
 python-versions = ">=3.5"
-version = "2.2.3"
+version = "2.2.4"
 
 [package.dependencies]
 pytz = "*"
@@ -106,7 +93,6 @@ category = "main"
 description = "A configurable set of panels that display various debug information about the current request/response."
 name = "django-debug-toolbar"
 optional = false
-platform = "*"
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "1.11"
 
@@ -119,7 +105,6 @@ category = "dev"
 description = "Fabric is a simple, Pythonic tool for remote execution and deployment (py2.7/py3.4+ compatible fork)."
 name = "fabric3"
 optional = false
-platform = "*"
 python-versions = "*"
 version = "1.14.post1"
 
@@ -132,7 +117,6 @@ category = "main"
 description = "WSGI HTTP Server for UNIX"
 name = "gunicorn"
 optional = false
-platform = "*"
 python-versions = ">=2.6, !=3.0.*, !=3.1.*"
 version = "19.9.0"
 
@@ -141,7 +125,6 @@ category = "dev"
 description = "IPython-enabled pdb"
 name = "ipdb"
 optional = false
-platform = "*"
 python-versions = ">=2.7"
 version = "0.11"
 
@@ -157,14 +140,16 @@ category = "dev"
 description = "IPython: Productive Interactive Computing"
 name = "ipython"
 optional = false
-platform = "Linux"
 python-versions = ">=3.3"
 version = "6.5.0"
 
 [package.dependencies]
+appnope = "*"
 backcall = "*"
+colorama = "*"
 decorator = "*"
 jedi = ">=0.10"
+pexpect = "*"
 pickleshare = "*"
 prompt-toolkit = ">=1.0.15,<2.0.0"
 pygments = "*"
@@ -172,24 +157,11 @@ setuptools = ">=18.5"
 simplegeneric = ">0.8"
 traitlets = ">=4.2"
 
-[package.dependencies.appnope]
-platform = "darwin"
-version = "*"
-
-[package.dependencies.colorama]
-platform = "win32"
-version = "*"
-
-[package.dependencies.pexpect]
-platform = "!=win32"
-version = "*"
-
 [[package]]
 category = "dev"
 description = "Vestigial utilities from IPython"
 name = "ipython-genutils"
 optional = false
-platform = "Linux"
 python-versions = "*"
 version = "0.2.0"
 
@@ -198,7 +170,6 @@ category = "dev"
 description = "An autocompletion tool for Python that can be used for text editors."
 name = "jedi"
 optional = false
-platform = "any"
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.14.0"
 
@@ -210,7 +181,6 @@ category = "main"
 description = "Sass for Python: A straightforward binding of libsass for Python."
 name = "libsass"
 optional = false
-platform = "*"
 python-versions = "*"
 version = "0.14.5"
 
@@ -222,7 +192,6 @@ category = "dev"
 description = "SSH2 protocol library"
 name = "paramiko"
 optional = false
-platform = "Posix; MacOS X; Windows"
 python-versions = "*"
 version = "2.6.0"
 
@@ -236,31 +205,26 @@ category = "dev"
 description = "A Python Parser"
 name = "parso"
 optional = false
-platform = "any"
 python-versions = "*"
 version = "0.5.0"
 
 [[package]]
 category = "dev"
 description = "Pexpect allows easy control of interactive console applications."
+marker = "python_version >= \"3.3\" and sys_platform != \"win32\" or sys_platform != \"win32\""
 name = "pexpect"
 optional = false
-platform = "UNIX"
 python-versions = "*"
 version = "4.7.0"
 
 [package.dependencies]
 ptyprocess = ">=0.5"
 
-[package.requirements]
-platform = "!=win32"
-
 [[package]]
 category = "dev"
 description = "Tiny 'shelve'-like database with concurrency support"
 name = "pickleshare"
 optional = false
-platform = "*"
 python-versions = "*"
 version = "0.7.5"
 
@@ -269,7 +233,6 @@ category = "dev"
 description = "Library for building powerful interactive command lines in Python"
 name = "prompt-toolkit"
 optional = false
-platform = "*"
 python-versions = "*"
 version = "1.0.16"
 
@@ -282,28 +245,23 @@ category = "main"
 description = "psycopg2 - Python-PostgreSQL Database Adapter"
 name = "psycopg2"
 optional = false
-platform = "any"
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 version = "2.8.3"
 
 [[package]]
 category = "dev"
 description = "Run a subprocess in a pseudo terminal"
+marker = "python_version >= \"3.3\" and sys_platform != \"win32\" or sys_platform != \"win32\""
 name = "ptyprocess"
 optional = false
-platform = "*"
 python-versions = "*"
 version = "0.6.0"
-
-[package.requirements]
-platform = "!=win32"
 
 [[package]]
 category = "dev"
 description = "C parser in Python"
 name = "pycparser"
 optional = false
-platform = "Cross Platform"
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "2.19"
 
@@ -312,7 +270,6 @@ category = "dev"
 description = "Pygments is a syntax highlighting package written in Python."
 name = "pygments"
 optional = false
-platform = "any"
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 version = "2.4.2"
 
@@ -321,7 +278,6 @@ category = "dev"
 description = "Python binding to the Networking and Cryptography (NaCl) library"
 name = "pynacl"
 optional = false
-platform = "*"
 python-versions = "*"
 version = "1.3.0"
 
@@ -334,7 +290,6 @@ category = "main"
 description = "Pure python memcached client"
 name = "python-memcached"
 optional = false
-platform = "*"
 python-versions = "*"
 version = "1.59"
 
@@ -346,7 +301,6 @@ category = "main"
 description = "World timezone definitions, modern and historical"
 name = "pytz"
 optional = false
-platform = "Independent"
 python-versions = "*"
 version = "2019.1"
 
@@ -355,7 +309,6 @@ category = "main"
 description = "Raven is a client for Sentry (https://getsentry.com)"
 name = "raven"
 optional = false
-platform = "*"
 python-versions = "*"
 version = "6.10.0"
 
@@ -364,7 +317,6 @@ category = "dev"
 description = "Simple generic functions (similar to Python's own len(), pickle.dump(), etc.)"
 name = "simplegeneric"
 optional = false
-platform = "UNKNOWN"
 python-versions = "*"
 version = "0.8.1"
 
@@ -373,7 +325,6 @@ category = "main"
 description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
-platform = "*"
 python-versions = ">=2.6, !=3.0.*, !=3.1.*"
 version = "1.12.0"
 
@@ -382,7 +333,6 @@ category = "main"
 description = "Non-validating SQL parser"
 name = "sqlparse"
 optional = false
-platform = "*"
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.3.0"
 
@@ -391,7 +341,6 @@ category = "dev"
 description = "Traitlets Python config system"
 name = "traitlets"
 optional = false
-platform = "Linux,Mac OS X,Windows"
 python-versions = "*"
 version = "4.3.2"
 
@@ -405,13 +354,11 @@ category = "dev"
 description = "Measures number of Terminal column cells of wide-character codes"
 name = "wcwidth"
 optional = false
-platform = "UNKNOWN"
 python-versions = "*"
 version = "0.1.7"
 
 [metadata]
-content-hash = "4fd25cff17245dc49ef6bf54631bdd4695efe52554b23dbcc71143f0c22bc5db"
-platform = "*"
+content-hash = "40f80f919b8978b96ce095ce4367e6f33f5352f914f5d5c75bb81760f7443d88"
 python-versions = "3.6.*"
 
 [metadata.hashes]
@@ -423,7 +370,7 @@ cffi = ["041c81822e9f84b1d9c401182e174996f0bae9991f33725d059b771744290774", "046
 colorama = ["05eed71e2e327246ad6b38c540c4a3117230b19679b875190486ddd2d721422d", "f8ac84de7840f5b9c4e3347b3c1eaa50f7e49c2b07596221daec5edaabbd7c48"]
 cryptography = ["24b61e5fcb506424d3ec4e18bca995833839bf13c59fc43e530e488f28d46b8c", "25dd1581a183e9e7a806fe0543f485103232f940fcfc301db65e630512cce643", "3452bba7c21c69f2df772762be0066c7ed5dc65df494a1d53a58b683a83e1216", "41a0be220dd1ed9e998f5891948306eb8c812b512dc398e5a01846d855050799", "5751d8a11b956fbfa314f6553d186b94aa70fdb03d8a4d4f1c82dcacf0cbe28a", "5f61c7d749048fa6e3322258b4263463bfccefecb0dd731b6561cb617a1d9bb9", "72e24c521fa2106f19623a3851e9f89ddfdeb9ac63871c7643790f872a305dfc", "7b97ae6ef5cba2e3bb14256625423413d5ce8d1abb91d4f29b6d1a081da765f8", "961e886d8a3590fd2c723cf07be14e2a91cf53c25f02435c04d39e90780e3b53", "96d8473848e984184b6728e2c9d391482008646276c3ff084a1bd89e15ff53a1", "ae536da50c7ad1e002c3eee101871d93abdc90d9c5f651818450a0d3af718609", "b0db0cecf396033abb4a93c95d1602f268b3a68bb0a9cc06a7cff587bb9a7292", "cfee9164954c186b191b91d4193989ca994703b2fff406f71cf454a2d3c7327e", "e6347742ac8f35ded4a46ff835c60e68c22a536a8ae5c4422966d06946b6d4c6", "f27d93f0139a3c056172ebb5d4f9056e770fdf0206c2f422ff2ebbad142e09ed", "f57b76e46a58b63d1c6375017f4564a28f19a5ca912691fd2e4261b3414b618d"]
 decorator = ["86156361c50488b84a3f148056ea716ca587df2f0de1d34750d35c21312725de", "f069f3a01830ca754ba5258fde2278454a0b5b79e0d7f5c13b3b97e57d4acff6"]
-django = ["4d23f61b26892bac785f07401bc38cbf8fa4cec993f400e9cd9ddf28fd51c0ea", "6e974d4b57e3b29e4882b244d40171d6a75202ab8d2402b8e8adbd182e25cf0c"]
+django = ["16a5d54411599780ac9dfe3b9b38f90f785c51259a584e0b24b6f14a7f69aae8", "9a2f98211ab474c710fcdad29c82f30fc14ce9917c7a70c3682162a624de4035"]
 django-debug-toolbar = ["89d75b60c65db363fb24688d977e5fbf0e73386c67acf562d278402a10fc3736", "c2b0134119a624f4ac9398b44f8e28a01c7686ac350a12a74793f3dd57a9eea0"]
 fabric3 = ["647e485ec83f30b587862f92374d6affc217f3d79819d1d7f512e42e7ae51e81", "7c5a5f2eb3079eb6bd2a69931f1ca298844c730ce3fdc68111db16e8857a0408"]
 gunicorn = ["aa8e0b40b4157b36a5df5e599f45c9c76d6af43845ba3b3b0efe2c70473c2471", "fa2662097c66f920f53f70621c6c58ca4a3c4d3434205e608e121b5b3b71f4f3"]
