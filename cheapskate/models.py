@@ -23,13 +23,14 @@ class Account(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=150)
+    archived = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
 
     class Meta:
         abstract = True
-        ordering = ('title', )
+        ordering = ('title', '-archived')
 
 
 class ExpenseCategory(Category):

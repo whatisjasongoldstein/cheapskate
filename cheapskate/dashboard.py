@@ -32,7 +32,7 @@ def get_expenses(month, year, category=None, one_off=None):
 
     if month is not None:
         kwargs["date__month"] = month
-    
+
     if category:
         kwargs["category"] = category
 
@@ -44,11 +44,13 @@ def get_expenses(month, year, category=None, one_off=None):
 
 def get_incomes(month, year, category=None, one_off=None):
     kwargs = {
-        "date__month": month,
         "date__year": year,
         "category__isnull": False,
     }
-    
+
+    if month is not None:
+        kwargs[ "date__month"] = month
+
     if category:
         kwargs["category"] = category
 
@@ -59,7 +61,7 @@ def get_incomes(month, year, category=None, one_off=None):
 
 
 class Month(object):
-    
+
     def __init__(self, index, year, expense_categories=None, income_categories=None):
         self.index = index
         self.year = year
@@ -95,6 +97,25 @@ PAST = "past"
 ONE_OFF = "one_off"
 
 
+def get_expense_categories(year):
+    cats = []
+    qs = ExpenseCategory.objects.all().order_by("title")
+    for cat in qs:
+        if get_expenses(None, year, category=cat) > 0:
+            cats.append(cat)
+    return cats
+
+
+def get_income_categories(year):
+    cats = []
+    qs = IncomeCategory.objects.all().order_by("title")
+    for cat in qs:
+        if get_incomes(None, year, category=cat) > 0:
+            cats.append(cat)
+    return cats
+
+
+
 class Dashboard(object):
 
     def __init__(self, year=None):
@@ -105,8 +126,8 @@ class Dashboard(object):
         self.year = year or self.today.year
 
         # Make this query here once and pass it around.
-        expense_categories = list(ExpenseCategory.objects.all().order_by("title"))
-        income_categories = list(IncomeCategory.objects.all().order_by("title"))
+        expense_categories = get_expense_categories(self.year)
+        income_categories = get_income_categories(self.year)
 
         self.months = [Month(i, self.year,
             expense_categories=expense_categories,
@@ -148,12 +169,12 @@ class Dashboard(object):
                 "date__year": self.year,
                 "date__month__in": [m.index for m in self.past_months],
                 "is_one_off": False,
-                "category__isnull": False, 
+                "category__isnull": False,
             },
             ONE_OFF: {
                 "date__year": self.year,
                 "is_one_off": True,
-                "category__isnull": False, 
+                "category__isnull": False,
             }
         }
 
@@ -212,9 +233,9 @@ class Dashboard(object):
 
         # Add the one-offs to the projected totals based
         # on common events.
-        projected_income = ((self.average_monthly_income * 12) + 
+        projected_income = ((self.average_monthly_income * 12) +
                              self.one_off_income)
-        projected_expenses = ((self.average_monthly_expenses * 12) + 
+        projected_expenses = ((self.average_monthly_expenses * 12) +
                              self.one_off_expenses)
         projected_net = projected_income - projected_expenses
 

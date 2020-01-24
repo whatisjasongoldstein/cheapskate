@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.utils.safestring import mark_safe
 
 from .widgets import JSONSelectMultiple
-from .models import (Account, Charge, Withdrawal, Deposit, 
+from .models import (Account, Charge, Withdrawal, Deposit,
     ExpenseCategory, IncomeCategory, CCBill)
 
 
@@ -15,6 +15,10 @@ class DefaultAccountMixin(object):
         super(DefaultAccountMixin, self).__init__(*args, **kwargs)
         if self.fields["account"].queryset.count() > 0:
             self.initial["account"] = self.fields["account"].queryset[0]
+
+        self.fields["category"].queryset = self.fields["category"].queryset.filter(
+            Q(archived=False) | Q(id=getattr(self.instance, "category_id"))
+        )
 
 
 class ChargeForm(DefaultAccountMixin, forms.ModelForm):
@@ -26,7 +30,7 @@ class ChargeForm(DefaultAccountMixin, forms.ModelForm):
 
 
 class WithdrawalForm(DefaultAccountMixin, forms.ModelForm):
-    
+
     date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
 
     class Meta:
@@ -46,7 +50,7 @@ class DepositForm(DefaultAccountMixin, forms.ModelForm):
 class CCBillForm(forms.ModelForm):
 
     date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
-    
+
     def __init__(self, *args, **kwargs):
         super(CCBillForm, self).__init__(*args, **kwargs)
 
@@ -56,7 +60,7 @@ class CCBillForm(forms.ModelForm):
                 Q(id__in=current_charges) | Q(paid=False)
             ).select_related("category")
             self.fields["charges"].widget = JSONSelectMultiple(
-                attrs={"data-credit-card-charge-filter": 1}, 
+                attrs={"data-credit-card-charge-filter": 1},
                 choices=[(obj.id, {
                     "id": obj.id,
                     "title": obj.title,
