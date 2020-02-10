@@ -129,6 +129,12 @@ class Dashboard(object):
         expense_categories = get_expense_categories(self.year)
         income_categories = get_income_categories(self.year)
 
+        # Categories should be in the order of how
+        # expensive they are
+        expense_categories = sorted(expense_categories,
+            key=lambda cat: get_expenses(None, self.year, category=cat),
+            reverse=True)
+
         self.months = [Month(i, self.year,
             expense_categories=expense_categories,
             income_categories=income_categories) for i in range(1, 13)]
